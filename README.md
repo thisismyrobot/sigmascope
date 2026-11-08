@@ -6,6 +6,14 @@ Converts IPAM information sets into SIEM queries, via Sigma.
 
 Python 3.14+ + `uv`, or docker
 
+## Setup
+
+### Python
+
+Add output format packages (choose from `splunk`, ... TODO):
+
+`uv sync --extra splunk`
+
 ## Run
 
 ### Docker

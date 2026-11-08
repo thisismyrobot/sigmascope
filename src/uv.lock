@@ -310,6 +310,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pysigma-backend-splunk"
+version = "3.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pysigma" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8f/ca/d85f4f51e4151d63e9c0c5c9c025592b0c54afc27b082a2c1956fa427e60/pysigma_backend_splunk-3.0.0.tar.gz", hash = "sha256:c424ea43195614caa99dbb1b7c08ca413c49b5246ac01adf8a6bb55fd2d1b8b7", size = 22408, upload-time = "2026-10-28T09:14:19.03Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f2/d2/f05199319ccb630cc9e073f700029b02332bda2af0b5a27223bbdd83a7ea/pysigma_backend_splunk-3.0.0-py3-none-any.whl", hash = "sha256:56fe1614ba38a6991fbe02e9dff6f27704fa84b90951e5c86ef2a6ab475a5bff", size = 24043, upload-time = "2026-10-28T09:14:17.853Z" },
+]
+
+[[package]]
 name = "pyyaml"
 version = "6.0.3"
 source = { registry = "https://pypi.org/simple" }
@@ -359,11 +371,18 @@ dependencies = [
     { name = "pyyaml" },
 ]
 
+[package.optional-dependencies]
+splunk = [
+    { name = "pysigma-backend-splunk" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "pysigma", specifier = ">=2.0.2" },
+    { name = "pysigma-backend-splunk", marker = "extra == 'splunk'", specifier = ">=3.0.0" },
     { name = "pyyaml", specifier = ">=6.0.3" },
 ]
+provides-extras = ["splunk"]
 
 [[package]]
 name = "types-pyyaml"

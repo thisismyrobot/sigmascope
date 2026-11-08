@@ -6,3 +6,8 @@ dependencies = [
     "pysigma>=2.0.2",
     "pyyaml>=6.0.3",
 ]
+
+[project.optional-dependencies]
+splunk = [
+    "pysigma-backend-splunk>=3.0.0"
+]
