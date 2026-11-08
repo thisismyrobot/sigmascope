@@ -3,11 +3,8 @@ name = "sigmascope"
 version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
+    "pip>=26.3",
     "pysigma>=2.0.2",
     "pyyaml>=6.0.3",
-]
-
-[project.optional-dependencies]
-splunk = [
-    "pysigma-backend-splunk>=3.0.0"
+    "sigma-cli>=4.0.0",
 ]
