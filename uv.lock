@@ -450,7 +450,6 @@ splunk = [
 
 [package.dev-dependencies]
 dev = [
-    { name = "pysigma-backend-splunk" },
     { name = "pytest" },
 ]
 
@@ -465,10 +464,7 @@ requires-dist = [
 provides-extras = ["splunk", "kql"]
 
 [package.metadata.requires-dev]
-dev = [
-    { name = "pysigma-backend-splunk", specifier = ">=2.1.0" },
-    { name = "pytest", specifier = ">=9.2.0" },
-]
+dev = [{ name = "pytest", specifier = ">=9.2.0" }]
 
 [[package]]
 name = "types-pyyaml"

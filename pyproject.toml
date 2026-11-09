@@ -18,9 +18,8 @@ kql = [
 
 [dependency-groups]
 dev = [
-    "pysigma-backend-splunk>=2.1.0",
     "pytest>=9.2.0",
 ]
 
 [tool.pytest.ini_options]
-addopts = "-vv"
+addopts = "-vv -x"

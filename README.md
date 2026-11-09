@@ -18,6 +18,8 @@ The goal is to simplify the process of searching firewall logs for traffic targe
  - [ ] Docker
  - [ ] Templates
  - [ ] Sigma debug output
+ - [ ] Use sigma plugins formally?
+ - [ ] IPv6?
 
 ## Requirements
 
@@ -37,7 +39,7 @@ Enable backends using uv extras (choose from `splunk`, `kql`):
 
 ### Pipelines
 
-To fine-tune output fields beyond the pipelines included in the pySigma backend modules, add or use YAML pipelines in: [`src/pipelines/`](pipelines/).
+To fine-tune output fields beyond the pipelines included in the pySigma backend modules, use YAML pipelines in: [`src/pipelines/`](pipelines/) or create your own.
 
 [pySigma reference](https://sigmahq-pysigma.readthedocs.io/en/latest/guides/processing_pipelines.html)
 
@@ -59,7 +61,7 @@ Simple list of IP addresses and ranges that are assigned to assets.
 
 [Example](tests/data/assigned.csv)
 
-### Allowed addresses.
+### Allowed addresses
 
 Additionally, you can provide a list of addresses or ranges that you are expecting - for instance security scanning tools.
 
@@ -99,6 +101,7 @@ uv run sigmascope.py tests/data/reserved.csv tests/data/assigned.csv sigma.backe
 ## Tests
 
 ```
+uv sync --all-extras
 uv run py.test
 ```
 
