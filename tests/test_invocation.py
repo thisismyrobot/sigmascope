@@ -3,7 +3,7 @@ import textwrap
 
 
 def test_help_invocation():
-    help_text = subprocess.run(['uv', 'run', 'py', 'sigmascope.py'], capture_output=True, text=True).stderr
+    help_text = subprocess.run(['uv', 'run', 'sigmascope.py'], capture_output=True, text=True).stderr
 
     assert help_text.strip() == textwrap.dedent("""
         usage: sigmascope.py [-h] [--allowed_source_nets ALLOWED_SOURCE_NETS]
