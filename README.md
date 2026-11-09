@@ -64,8 +64,8 @@ uv run sigmascope.py [reservations CSV file] [assigned CSV file] [backend spec] 
 
 Examples:
 ```
-uv run sigmascope.py reserved.csv assigned.csv sigma.backends.splunk:SplunkBackend pipelines/splunk_cim_firewall_logs.yaml
-uv run sigmascope.py reserved.csv assigned.csv sigma.backends.splunk:SplunkBackend sigma.pipelines.splunk:splunk_windows_pipeline
+uv run sigmascope.py tests/data/reserved.csv tests/data/assigned.csv sigma.backends.splunk:SplunkBackend pipelines/splunk_cim_firewall_logs.yaml
+uv run sigmascope.py tests/data/reserved.csv tests/data/assigned.csv sigma.backends.splunk:SplunkBackend sigma.pipelines.splunk:splunk_windows_pipeline
 ```
 
 ## Tests
