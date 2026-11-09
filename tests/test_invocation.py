@@ -40,3 +40,19 @@ def test_pipeline_file_invocation():
     ], capture_output=True, text=True).stdout
 
     assert query_text.strip() == 'dest_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")'
+
+
+def test_pipeline_invocation_with_allowed_sources():
+    query_text = subprocess.run([
+        'uv',
+        'run',
+        'py',
+        'sigmascope.py',
+        'tests/data/reserved.csv',
+        'tests/data/assigned.csv',
+        'sigma.backends.splunk:SplunkBackend',
+        'pipelines/splunk_cim_firewall_logs.yaml',
+        '--allowed_csv=tests/data/allowed.csv'
+    ], capture_output=True, text=True).stdout
+
+    assert query_text.strip() == 'dest_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29") NOT (src_ip IN ("10.0.1.2/32", "10.0.4.0/29"))'

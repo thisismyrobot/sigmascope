@@ -1,6 +1,12 @@
-# SigmaScope: Network telescope/IP darknet rule generator
+# SigmaScope: Network telescope/IP darknet threat hunting query generator
 
 Converts IPAM information sets into darknet-detecting SIEM queries, via Sigma.
+
+**This project is WIP**
+
+## Purpose
+
+The goal is to simplify the process of searching firewall logs for traffic targeting IP darknet ranges, buy converting assigned, reserved, and know-good source ip addresses and range information into threat hunting queries.
 
 ## TODO
 
@@ -14,7 +20,7 @@ Converts IPAM information sets into darknet-detecting SIEM queries, via Sigma.
 
 ## Requirements
 
-Python 3.14+ + `uv`, or docker
+Python 3.14+ + `uv`
 
 ## Configuration
 
@@ -70,7 +76,7 @@ Examples:
 ```
 uv run sigmascope.py tests/data/reserved.csv tests/data/assigned.csv sigma.backends.splunk:SplunkBackend pipelines/splunk_cim_firewall_logs.yaml
 uv run sigmascope.py tests/data/reserved.csv tests/data/assigned.csv sigma.backends.splunk:SplunkBackend sigma.pipelines.splunk:splunk_windows_pipeline
-uv run sigmascope.py tests/data/reserved.csv tests/data/assigned.csv sigma.backends.kusto:KustoBackend pipelines/defender_xdr.yaml
+uv run sigmascope.py tests/data/reserved.csv tests/data/assigned.csv sigma.backends.kusto:KustoBackend pipelines/defender_xdr.yaml --allowed_csv=tests/data/allowed.csv
 ```
 
 ## Tests
