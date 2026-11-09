@@ -7,6 +7,7 @@ transformations:
     type: field_name_mapping
     mapping:
       dst_ip: RemoteIP
+      src_ip: LocalIP
     rule_conditions:
       - type: logsource
         category: firewall

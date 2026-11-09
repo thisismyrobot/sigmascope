@@ -11,7 +11,7 @@ import sigma.validators.core
 import yaml
 
 
-def to_sigma(networks):
+def to_sigma(dark_networks, allowed_sources):
     # Need to work out correct fields to align with Splunk Common Information Model (CIM)
     rule_data = {
         'title': 'SigmaScope search',
@@ -19,12 +19,16 @@ def to_sigma(networks):
             'category': 'firewall'
         },
         'detection': {
-            'selection': {
-                'dst_ip': [network.exploded for network in networks]
+            'dark_networks': {
+                'dst_ip': [network.exploded for network in dark_networks]
             },
-            'condition': 'selection'
+            'condition': 'dark_networks'
         }
     }
+
+    if allowed_sources:
+        rule_data['detection']['allowed_sources'] = {'src_ip': [network.exploded for network in allowed_sources]}
+        rule_data['detection']['condition'] += ' and not allowed_sources'
 
     validator = sigma.validation.SigmaValidator.from_dict({'validators':['all']}, sigma.validators.core.validators)
     rule = sigma.rule.SigmaRule.from_dict(rule_data)
@@ -77,7 +81,7 @@ def load_backend(target_spec, pipeline_spec):
 
 def main(assigned_nets, reserved_nets, allowed_nets, target_spec, pipeline_spec, output_path=None):
     dark_nets = dark_networks(assigned_nets, reserved_nets)
-    sigma_rule_yaml = to_sigma(dark_nets)
+    sigma_rule_yaml = to_sigma(dark_nets, allowed_nets)
     sigma_rule_collection = sigma.collection.SigmaCollection.from_yaml(sigma_rule_yaml)
     backend = load_backend(target_spec, pipeline_spec)
     query = backend.convert(sigma_rule_collection)[0]

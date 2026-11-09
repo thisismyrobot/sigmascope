@@ -4,10 +4,11 @@ Converts IPAM information sets into darknet-detecting SIEM queries, via Sigma.
 
 ## TODO
 
- - [ ] Allowlist
+ - [x] Allow-list source networks
  - [x] KQL for Defender Advanced Threat Hunting
  - [ ] Negative test cases/error handling
  - [ ] Enforce `allowed_backends`
+ - [ ] Drop `/32` postfixes
  - [ ] Docker
  - [ ] Templates
 
@@ -81,3 +82,10 @@ uv run py.test
 ## About
 
 sigmascope heavily leverages and appreciates `pysigma` for output generation.
+
+These links proved invaluable too:
+ - https://www.dogesec.com/blog/beginners_guide_to_using_sigma_cli_pysigma/
+ - https://threatclaw.io/en/blog/sigma-to-sentinel-kql
+ - https://sigmahq.io/sigma-specification/specification/sigma-appendix-taxonomy.html
+ - https://sigmahq-pysigma.readthedocs.io/en/latest/guides/processing_pipelines.html
+ - https://help.splunk.com/en/splunk-cloud-platform/common-information-model/5.1/data-models/cim-fields-per-associated-data-model

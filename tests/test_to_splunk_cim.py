@@ -1,25 +1,26 @@
 import sigmascope
 
 
-def test_to_splunk_cim_using_yaml_pipeline(net):
+def test_splunk_cim_using_yaml_pipeline(net):
     reserved_nets = [net('10.0.0.0/28')]
     assigned_nets = [
         net('10.0.0.1'),
         net('10.0.0.4'),
         net('10.0.0.5'),
     ]
+    allowed_source_nets = [net('10.0.0.9'), net('10.0.0.10')]
     cim_search = sigmascope.main(
         reserved_nets,
         assigned_nets,
-        [],
+        allowed_source_nets,
         target_spec=('sigma.backends.splunk', 'SplunkBackend'),
         pipeline_spec='pipelines/splunk_cim_firewall_logs.yaml'
     )
 
-    assert cim_search == 'dest_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")'
+    assert cim_search == 'dest_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29") NOT (src_ip IN ("10.0.0.9/32", "10.0.0.10/32"))'
 
 
-def test_to_splunk_cim_using_module_pipeline(net):
+def test_splunk_cim_using_module_pipeline(net):
     reserved_nets = [net('10.0.0.0/28')]
     assigned_nets = [
         net('10.0.0.1'),
