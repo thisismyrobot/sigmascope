@@ -1,5 +1,3 @@
-import ipaddress
-
 import sigmascope
 
 

@@ -1,0 +1,12 @@
+name: defender_xdr_field_mapping
+priority: 20
+allowed_backends:
+  - kusto
+transformations:
+  - id: defender_xdr_device_network_events_field_mapping
+    type: field_name_mapping
+    mapping:
+      dst_ip: RemoteIP
+    rule_conditions:
+      - type: logsource
+        category: firewall

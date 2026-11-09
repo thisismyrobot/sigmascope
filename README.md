@@ -5,8 +5,9 @@ Converts IPAM information sets into darknet-detecting SIEM queries, via Sigma.
 ## TODO
 
  - [ ] Allowlist
- - [ ] KQL for Defender Advanced Threat Hunting
+ - [x] KQL for Defender Advanced Threat Hunting
  - [ ] Negative test cases/error handling
+ - [ ] Enforce `allowed_backends`
  - [ ] Docker
  - [ ] Templates
 
@@ -33,6 +34,8 @@ Enable backends using uv extras (choose from `splunk`, `kql`):
 To fine-tune output fields beyond the pipelines included in the pySigma backend modules, add or use YAML pipelines in: [`src/pipelines/`](pipelines/).
 
 [pySigma reference](https://sigmahq-pysigma.readthedocs.io/en/latest/guides/processing_pipelines.html)
+
+https://github.com/SigmaHQ/pySigma-plugin-directory/blob/main/pySigma-plugins-v1.json
 
 ## Inputs
 
@@ -66,7 +69,7 @@ Examples:
 ```
 uv run sigmascope.py tests/data/reserved.csv tests/data/assigned.csv sigma.backends.splunk:SplunkBackend pipelines/splunk_cim_firewall_logs.yaml
 uv run sigmascope.py tests/data/reserved.csv tests/data/assigned.csv sigma.backends.splunk:SplunkBackend sigma.pipelines.splunk:splunk_windows_pipeline
-uv run sigmascope.py tests/data/reserved.csv tests/data/assigned.csv sigma.backends.kusto:KustoBackend sigma.pipelines.microsoftxdr:microsoft_xdr_pipeline
+uv run sigmascope.py tests/data/reserved.csv tests/data/assigned.csv sigma.backends.kusto:KustoBackend pipelines/defender_xdr.yaml
 ```
 
 ## Tests
