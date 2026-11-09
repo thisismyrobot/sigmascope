@@ -4,21 +4,21 @@ version = "0.1.0"
 requires-python = ">=3.14"
 dependencies = [
     "pip>=26.3",
-    "pysigma>=2.0.2",
+    "pysigma>=1.0.0",
     "pyyaml>=6.0.3",
 ]
 
 [project.optional-dependencies]
 splunk = [
-    "pysigma-backend-splunk>=3.0.0",
+    "pysigma-backend-splunk>=2.1.0"
 ]
 kql = [
-    "pysigma-backend-kusto>=0.4.5"
+    "pysigma-backend-kusto>=1.0.0"
 ]
 
 [dependency-groups]
 dev = [
-    "pysigma-backend-splunk>=3.0.0",
+    "pysigma-backend-splunk>=2.1.0",
     "pytest>=9.2.0",
 ]
 
