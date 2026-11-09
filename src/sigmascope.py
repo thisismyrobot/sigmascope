@@ -1,6 +1,7 @@
 import argparse
 import importlib
 import ipaddress
+import sys
 
 import sigma.collection
 import sigma.processing.pipeline
@@ -91,10 +92,11 @@ if __name__ == '__main__':
     parser.add_argument('pipeline_spec', help='Pass a pipeline YAML file path or sigma.pipelines.[module]:[constructor]')
     parser.add_argument('--allowed_csv', default=None)
     args = parser.parse_args()
-    print(main(
+    query = main(
         load_networks_from_csv(args.reserved_csv),
         load_networks_from_csv(args.assigned_csv),
         (load_networks_from_csv(args.allowed_csv) if args.allowed_csv else []),
         args.target_spec.split(':'),
         args.pipeline_spec if ':' not in args.pipeline_spec else args.pipeline_spec.split(':')
-    ))
+    )
+    sys.stdout.write(query)

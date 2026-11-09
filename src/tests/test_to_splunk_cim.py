@@ -18,9 +18,7 @@ def test_to_splunk_cim_using_yaml_pipeline(net):
         pipeline_spec='pipelines/splunk_cim_firewall_logs.yaml'
     )
 
-    assert cim_search == """
-        dest_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")
-    """.strip()
+    assert cim_search == 'dest_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")'
 
 
 def test_to_splunk_cim_using_module_pipeline(net):
@@ -40,6 +38,5 @@ def test_to_splunk_cim_using_module_pipeline(net):
         pipeline_spec=('sigma.pipelines.splunk', 'splunk_windows_pipeline')
     )
 
-    assert cim_search == """
-        dst_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")
-    """.strip()
+    # The output here isn't what's useful for Splunk, but it is proof the module loaded and ran.
+    assert cim_search == 'dst_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")'
