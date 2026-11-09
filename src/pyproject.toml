@@ -8,5 +8,19 @@ dependencies = [
     "pyyaml>=6.0.3",
     "sigma-cli>=4.0.0",
 ]
+
+[project.optional-dependencies]
+splunk = [
+    "pysigma-backend-splunk>=3.0.0",
+]
+kql = [
+    "pysigma-backend-kusto>=0.4.5"
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
+
 [tool.pytest.ini_options]
 addopts = "-vv"

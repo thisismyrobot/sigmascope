@@ -18,8 +18,7 @@ def test_basic_sigma_rule(net):
     assert rule_yaml.strip() == textwrap.dedent("""
         title: SigmaScope search
         logsource:
-          category: network
-          service: connection
+          category: firewall
         detection:
           selection:
             dst_ip:
