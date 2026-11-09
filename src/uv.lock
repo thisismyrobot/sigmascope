@@ -161,6 +161,15 @@ wheels = [
 ]
 
 [[package]]
+name = "iniconfig"
+version = "2.3.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/01/e1/2069291243c926a2ff1cd706c7f3eeb9b62144bf60f77c9fb9ff2fb26bd3/iniconfig-2.3.1.tar.gz", hash = "sha256:67f4b9c50da0dedf52af349e7749a80a9057a5031199791b906c3bb3ae878960", size = 21209, upload-time = "2026-10-06T22:48:38.076Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/56/43/4ca9e49d27a1fcf6bece6f6aec0ea46bb9112489b93d4b688fb415457bdb/iniconfig-2.3.1-py3-none-any.whl", hash = "sha256:9121e2c1fdb355232495be3194c8dfe87ccc2d5dee45947b78e68f499790d7a7", size = 7552, upload-time = "2026-10-06T22:48:36.959Z" },
+]
+
+[[package]]
 name = "jinja2"
 version = "3.1.6"
 source = { registry = "https://pypi.org/simple" }
@@ -308,6 +317,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pluggy"
+version = "1.7.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/bf/db/7fc19e6f2dc92a966727031389fc2e08b558f0f25eb7403c1119ad4713cd/pluggy-1.7.0.tar.gz", hash = "sha256:d1eaa46ebb595891b860ab086b4d09c8588af65ebd4361b8e8f4bb8920b90ba8", size = 123304, upload-time = "2026-10-15T09:50:58.343Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/40/9e/2b38731e0fc536806f16490e1a12d7f0dc2a1235aa8cc07bcc75416a7daa/pluggy-1.7.0-py3-none-any.whl", hash = "sha256:7dd7b0d8832ba3cb632c306926ded123429211b83641b35dc5c41ad2d34f9bec", size = 27082, upload-time = "2026-10-15T09:50:56.808Z" },
+]
+
+[[package]]
 name = "prettytable"
 version = "3.18.0"
 source = { registry = "https://pypi.org/simple" }
@@ -317,6 +335,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/81/74/ba08d81e668ccfe8658d7520a307e63c19862c08eb4ccb26f356c5239a7a/prettytable-3.18.0.tar.gz", hash = "sha256:439217116152244369caf3d9f1caf2f9fe29b03bd79e88d2928c8e718c95d680", size = 76373, upload-time = "2026-06-22T16:07:50.174Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/fe/be/2e6798ace5cc036f5d05d36b7b2fd85346f1a708c87060890b070d0ec607/prettytable-3.18.0-py3-none-any.whl", hash = "sha256:b3346e0e6f79180833aebaac088ae926340586cf6d7d991b9eb125b65f72313a", size = 37357, upload-time = "2026-06-22T16:07:48.595Z" },
+]
+
+[[package]]
+name = "pygments"
+version = "2.21.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/49/2e/ced460408999b33da6b31b0021b0f37d329e202d4169aeb164493778f25b/pygments-2.21.0.tar.gz", hash = "sha256:610ca751c9bc2492b38eb9a38a7fbc93edbbb2d7182edaf34e66ae493dee5c8c", size = 5005329, upload-time = "2026-08-17T08:02:48.824Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/71/46/17f022dd3e953bf20a04a028a21ec746d942f8d2af30fa0f124fa0e6a684/pygments-2.21.0-py3-none-any.whl", hash = "sha256:2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9", size = 1250147, upload-time = "2026-08-17T08:02:44.912Z" },
 ]
 
 [[package]]
@@ -346,6 +373,47 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/67/94/2463945ca70f2d5135768c1898545a0df85586d1b0e66cc1842a649134b7/pysigma-2.0.2.tar.gz", hash = "sha256:c8fac45d24adfa14aeebcbab95929066116b2dbcc0816498066af56dda039832", size = 154540, upload-time = "2026-11-01T19:18:02.244Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/e8/c0/de77e7cbf0b8d9ee161d8a5206c7b5ef56d5fb98caa1e660f14e0e0002ff/pysigma-2.0.2-py3-none-any.whl", hash = "sha256:8fb128597a5d3812219d4dd17c76426bc480ea9875325c5eeeac114d6d8ebbec", size = 186061, upload-time = "2026-11-01T19:18:00.631Z" },
+]
+
+[[package]]
+name = "pysigma-backend-kusto"
+version = "0.4.5"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "certifi" },
+    { name = "pysigma" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/81/e5/10b8a85a4c5e49c3774b7d4c9f6b26b37b42f81057e3b793be8877bbb3ee/pysigma_backend_kusto-0.4.5.tar.gz", hash = "sha256:e79da1b6f3c7acb430861cd7430462317688d8845e80764f0408c5c5243ffb68", size = 299579, upload-time = "2025-11-23T18:17:30.484Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/aa/fc/67df4e24e3ee807f48f2c0842d4d4fde78662a567a59ee4be122fedc20c3/pysigma_backend_kusto-0.4.5-py3-none-any.whl", hash = "sha256:7c064a57455fa5bdea2b70fd731bdb1b810c37b9f9df9e31e86d09495ed3a92c", size = 314949, upload-time = "2025-11-23T18:17:28.873Z" },
+]
+
+[[package]]
+name = "pysigma-backend-splunk"
+version = "3.0.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pysigma" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8f/ca/d85f4f51e4151d63e9c0c5c9c025592b0c54afc27b082a2c1956fa427e60/pysigma_backend_splunk-3.0.0.tar.gz", hash = "sha256:c424ea43195614caa99dbb1b7c08ca413c49b5246ac01adf8a6bb55fd2d1b8b7", size = 22408, upload-time = "2026-10-28T09:14:19.03Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f2/d2/f05199319ccb630cc9e073f700029b02332bda2af0b5a27223bbdd83a7ea/pysigma_backend_splunk-3.0.0-py3-none-any.whl", hash = "sha256:56fe1614ba38a6991fbe02e9dff6f27704fa84b90951e5c86ef2a6ab475a5bff", size = 24043, upload-time = "2026-10-28T09:14:17.853Z" },
+]
+
+[[package]]
+name = "pytest"
+version = "9.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "iniconfig" },
+    { name = "packaging" },
+    { name = "pluggy" },
+    { name = "pygments" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/79/42/bb4641652e58dedeac2ec51abc1f8cae4fee4ec63899a0999016229a0f2a/pytest-9.2.0.tar.gz", hash = "sha256:97c4f3b1f3c7414aa36465e09b8220f1d03627993bd51b1282e193753c80557b", size = 1797555, upload-time = "2026-10-27T21:30:20.728Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/51/39/1f5d8c8877a0fa327db959c19341d4be61660de1ab6b7391f9eb805bcd67/pytest-9.2.0-py3-none-any.whl", hash = "sha256:07acdcf88ec174f907dc01af70bf52d49b014bbab03faeeade31c96b18c2e588", size = 411776, upload-time = "2026-10-27T21:30:19.131Z" },
 ]
 
 [[package]]
@@ -415,13 +483,32 @@ dependencies = [
     { name = "sigma-cli" },
 ]
 
+[package.optional-dependencies]
+kql = [
+    { name = "pysigma-backend-kusto" },
+]
+splunk = [
+    { name = "pysigma-backend-splunk" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "pip", specifier = ">=26.3" },
     { name = "pysigma", specifier = ">=2.0.2" },
+    { name = "pysigma-backend-kusto", marker = "extra == 'kql'", specifier = ">=0.4.5" },
+    { name = "pysigma-backend-splunk", marker = "extra == 'splunk'", specifier = ">=3.0.0" },
     { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "sigma-cli", specifier = ">=4.0.0" },
 ]
+provides-extras = ["splunk", "kql"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=9.2.0" }]
 
 [[package]]
 name = "types-pyyaml"

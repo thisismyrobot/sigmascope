@@ -14,6 +14,14 @@ uv run sigma plugin install splunk
 
 ## Run
 
+### Python
+
+```
+cd src
+uv run sigmascope.py [reservations CSV file] [assigned CSV file] [threshold] [format spec]
+uv run sigma convert -t splunk -p splunk_windows sigma.yaml
+```
+
 ### Docker
 
 ```
@@ -21,11 +29,11 @@ cd src
 docker run --mount type=bind,source=[ipam data],target=/tmp/ -it py sigmascope.py
 ```
 
-### Python
+## Tests
 
 ```
 cd src
-uv run sigmascope.py [reservations CSV file] [assigned CSV file] [threshold] [format spec]
+uv run py.test
 ```
 
 ## About

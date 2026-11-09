@@ -8,6 +8,7 @@ import yaml
 
 
 def to_sigma(networks):
+    # Need to work out correct fields to align with Splunk Common Information Model (CIM)
     rule_data = {
         'title': 'SigmaScope search',
         'logsource': {
@@ -16,7 +17,7 @@ def to_sigma(networks):
         },
         'detection': {
             'selection': {
-                'DestinationIp|cidr': [network.exploded for network in networks]
+                'dst_ip': [network.exploded for network in networks]
             },
             'condition': 'selection'
         }
@@ -25,7 +26,6 @@ def to_sigma(networks):
     validator = sigma.validation.SigmaValidator.from_dict({'validators':['all']}, sigma.validators.core.validators)
     rule = sigma.rule.SigmaRule.from_dict(rule_data)
     validator.validate_rule(rule)
-
     return yaml.safe_dump(rule_data, sort_keys=False)
 
 
@@ -42,16 +42,19 @@ def dark_networks(reserved, assigned):
     return reserved_dark
 
 
-def load_networks(csv_file):
+def load_networks_from_csv(csv_file):
     with open(csv_file, 'r') as f:
-        return list(ipaddress.collapse_addresses(ipaddress.ip_network(line.strip()) for line in f if line.strip()))
+        networks = [ipaddress.ip_network(line.strip())
+                    for line
+                    in f
+                    if line.strip() != '']
+        return list(ipaddress.collapse_addresses(networks))
 
 
-def main(reserved_csv, assigned_csv, allowed_csv=None, threshold=1):
-    reserved = load_networks(reserved_csv)
-    assigned = load_networks(assigned_csv)
-    dark = dark_networks(reserved, assigned)
-    sigma_rule = to_sigma(dark)
+def main(assigned_nets, reserved_nets, allowed_nets, target, pipeline):
+    dark_nets = dark_networks(assigned_nets, reserved_nets)
+    sigma_rule = to_sigma(dark_nets)
+    return sigma_rule
     with open('sigma.yaml', 'w') as f:
         f.write(sigma_rule)
 
@@ -61,6 +64,9 @@ if __name__ == '__main__':
     parser.add_argument('reserved_csv')
     parser.add_argument('assigned_csv')
     parser.add_argument('--allowed_csv', default=None)
-    parser.add_argument('--threshold', type=int, default=1)
     args = parser.parse_args()
-    main(args.reserved_csv, args.assigned_csv, args.allowed_csv, args.threshold)
+    main(
+        load_networks_from_csv(args.reserved_csv),
+        load_networks_from_csv(args.assigned_csv),
+        (load_networks_from_csv(args.allowed_csv) if args.allowed_csv else []),
+    )
