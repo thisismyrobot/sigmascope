@@ -1,6 +1,8 @@
 import argparse
+import csv
 import importlib
 import ipaddress
+import logging
 import sys
 
 import sigma.collection
@@ -49,13 +51,16 @@ def dark_networks(reserved, assigned):
     return reserved_dark
 
 
-def load_networks_from_csv(csv_file):
+def load_networks_from_csv(csv_file) -> list[ipaddress.IPv4Network]:
+    ipv4_networks = []
     with open(csv_file, 'r') as f:
-        networks = [ipaddress.ip_network(line.strip())
-                    for line
-                    in f
-                    if line.strip() != '']
-        return list(ipaddress.collapse_addresses(networks))
+        reader = csv.reader(f)
+        for (i, row) in enumerate(reader):
+            try:
+                ipv4_networks.append(ipaddress.IPv4Network(row[0].strip()))
+            except IndexError, ValueError:
+                logging.warning(f'Unable to parse valid IPv4 network from first entry in row {i+1}: {row}')
+        return list(ipaddress.collapse_addresses(ipv4_networks))
 
 
 def load_backend(target_spec, pipeline_spec):
