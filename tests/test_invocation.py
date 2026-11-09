@@ -16,7 +16,6 @@ def test_pipeline_module_invocation():
     query_text = subprocess.run([
         'uv',
         'run',
-        'py',
         'sigmascope.py',
         'tests/data/reserved.csv',
         'tests/data/assigned.csv',
@@ -31,7 +30,6 @@ def test_pipeline_file_invocation():
     query_text = subprocess.run([
         'uv',
         'run',
-        'py',
         'sigmascope.py',
         'tests/data/reserved.csv',
         'tests/data/assigned.csv',
@@ -46,7 +44,6 @@ def test_pipeline_invocation_with_allowed_sources():
     query_text = subprocess.run([
         'uv',
         'run',
-        'py',
         'sigmascope.py',
         'tests/data/reserved.csv',
         'tests/data/assigned.csv',
