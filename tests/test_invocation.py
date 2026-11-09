@@ -3,7 +3,7 @@ import textwrap
 
 
 def test_help_invocation():
-    help_text = subprocess.run(['uv', 'run', 'py', 'sigmascope.py'], capture_output=True, text=True).stderr
+    help_text = subprocess.run(['uv', 'run', 'sigmascope.py'], capture_output=True, text=True).stderr
 
     assert help_text.strip() == textwrap.dedent("""
         usage: sigmascope.py [-h] [--allowed_source_nets ALLOWED_SOURCE_NETS]
@@ -16,7 +16,6 @@ def test_pipeline_module_invocation():
     query_text = subprocess.run([
         'uv',
         'run',
-        'py',
         'sigmascope.py',
         'tests/data/reserved.csv',
         'tests/data/assigned.csv',
@@ -31,7 +30,6 @@ def test_pipeline_file_invocation():
     query_text = subprocess.run([
         'uv',
         'run',
-        'py',
         'sigmascope.py',
         'tests/data/reserved.csv',
         'tests/data/assigned.csv',
@@ -46,7 +44,6 @@ def test_pipeline_invocation_with_allowed_sources():
     query_text = subprocess.run([
         'uv',
         'run',
-        'py',
         'sigmascope.py',
         'tests/data/reserved.csv',
         'tests/data/assigned.csv',
