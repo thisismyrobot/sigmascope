@@ -1,8 +1,8 @@
-# SigmaScope: Network telescope/IP darknet threat hunting query generator
+# SigmaScope (WIP)
+
+SigmaScope is Network telescope/IP darknet threat hunting query generator.
 
 Converts IPAM information sets into darknet-detecting SIEM queries, via Sigma.
-
-**This project is WIP**
 
 ## Purpose
 
@@ -17,16 +17,15 @@ The goal is to simplify the process of searching firewall logs for traffic targe
  - [ ] Drop `/32` postfixes
  - [ ] Docker
  - [ ] Templates
+ - [ ] Sigma debug output
 
 ## Requirements
 
-Python 3.14+ + `uv`
+Python 3.14+ and [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
 
-## Configuration
+## Data flow
 
-### Python
-
-#### Output formats
+### Output formats
 
 Output formats are tied to [pySigma backends](https://github.com/SigmaHQ/pySigma#related-projects).
 
@@ -36,7 +35,7 @@ Enable backends using uv extras (choose from `splunk`, `kql`):
  - Multiple `uv sync --extra splunk --extra kql`
  - All of them: `uv sync --all-extras`
 
-#### Pipelines
+### Pipelines
 
 To fine-tune output fields beyond the pipelines included in the pySigma backend modules, add or use YAML pipelines in: [`src/pipelines/`](pipelines/).
 
@@ -44,21 +43,27 @@ To fine-tune output fields beyond the pipelines included in the pySigma backend 
 
 https://github.com/SigmaHQ/pySigma-plugin-directory/blob/main/pySigma-plugins-v1.json
 
-## Inputs
+### Input data
 
 IPAM data needs to be prepared into two files:
 
-### [`Reserved addresses (CSV)`](tests/data/reserved.csv)
+#### Reserved addresses (CSV)
 
 Simple list of IP addresses and ranges that are reserved for future use.
 
-### [`Assigned addresses (CSV)`](tests/data/reserved.csv)
+[Example](tests/data/reserved.csv)
+
+#### Assigned addresses (CSV)
 
 Simple list of IP addresses and ranges that are assigned to assets.
+
+[Example](tests/data/assigned.csv)
 
 ### Allowed addresses.
 
 Additionally, you can provide a list of addresses or ranges that you are expecting - for instance security scanning tools.
+
+[Example](tests/data/allowed.csv)
 
 ## Usage
 
