@@ -30,7 +30,7 @@ Enable backends using uv extras (choose from `splunk`, `kql`):
 
 #### Pipelines
 
-To fine-tune output fields beyond the pipelines included in the pySigma backend modules, add or use YAML pipelines in: [`src/pipelines/`](src/pipelines/).
+To fine-tune output fields beyond the pipelines included in the pySigma backend modules, add or use YAML pipelines in: [`src/pipelines/`](pipelines/).
 
 [pySigma reference](https://sigmahq-pysigma.readthedocs.io/en/latest/guides/processing_pipelines.html)
 
@@ -38,11 +38,11 @@ To fine-tune output fields beyond the pipelines included in the pySigma backend 
 
 IPAM data needs to be prepared into two files:
 
-### [`Reserved addresses (CSV)`](src/tests/data/reserved.csv)
+### [`Reserved addresses (CSV)`](tests/data/reserved.csv)
 
 Simple list of IP addresses and ranges that are reserved for future use.
 
-### [`Assigned addresses (CSV)`](src/tests/data/reserved.csv)
+### [`Assigned addresses (CSV)`](tests/data/reserved.csv)
 
 Simple list of IP addresses and ranges that are assigned to assets.
 
@@ -59,20 +59,18 @@ When exporting, chose a backend and pipeline.
 Pipeline tweaks field names, backend (target) does the final conversion to the query.
 
 ```
-cd src
 uv run sigmascope.py [reservations CSV file] [assigned CSV file] [backend spec] [pipeline spec]
 ```
 
 Examples:
 ```
-uv run py sigmascope.py reserved.csv assigned.csv sigma.backends.splunk:SplunkBackend pipelines/splunk_cim_firewall_logs.yaml
-uv run py sigmascope.py reserved.csv assigned.csv sigma.backends.splunk:SplunkBackend sigma.pipelines.splunk:splunk_windows_pipeline
+uv run sigmascope.py reserved.csv assigned.csv sigma.backends.splunk:SplunkBackend pipelines/splunk_cim_firewall_logs.yaml
+uv run sigmascope.py reserved.csv assigned.csv sigma.backends.splunk:SplunkBackend sigma.pipelines.splunk:splunk_windows_pipeline
 ```
 
 ## Tests
 
 ```
-cd src
 uv run py.test
 ```
 
