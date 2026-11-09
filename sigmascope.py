@@ -68,15 +68,25 @@ def load_backend(target_spec, pipeline_spec):
     pipeline = None
     try:
         mod_path, factory = pipeline_spec
-        pipeline_module = importlib.import_module(mod_path)
-        pipeline = getattr(pipeline_module, factory)()
     except ValueError:
-        if pipeline_spec.endswith('.yaml'):
-            with open(pipeline_spec, 'r') as f:
-                pipeline = sigma.processing.pipeline.ProcessingPipeline.from_yaml(f.read())
+        raise ValueError(f'Unable to parse pipeline module and factory path from: {pipeline_spec}')
+
+    try:
+        pipeline_module = importlib.import_module(mod_path)
+    except ModuleNotFoundError:
+        raise ValueError(f'Pipeline module {mod_path} could not be imported')
+
+    try:
+        pipeline = getattr(pipeline_module, factory)()
+    except AttributeError:
+        raise ValueError(f'Pipeline module {mod_path} does not have the factory {factory}')
+
+    if pipeline is None and pipeline_spec.endswith('.yaml'):
+        with open(pipeline_spec, 'r') as f:
+            pipeline = sigma.processing.pipeline.ProcessingPipeline.from_yaml(f.read())
 
     if pipeline is None:
-        raise Exception(f'Failed to load a module or file based on the pipeline spec: {pipeline_spec}')
+        raise ValueError(f'Failed to load a module or file based on the pipeline spec: {pipeline_spec}')
 
     # Load backend
     backend_module = importlib.import_module(target_spec[0])
