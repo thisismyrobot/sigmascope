@@ -17,4 +17,4 @@ jobs:
           uv sync --all-extras
       - name: Test with pytest
         run: |
-          uv run py.test
+          uv run py.test -n 2

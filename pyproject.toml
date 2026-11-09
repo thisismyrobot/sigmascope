@@ -19,7 +19,8 @@ kql = [
 [dependency-groups]
 dev = [
     "pytest>=9.2.0",
+    "pytest-xdist>=3.8.0",
 ]
 
 [tool.pytest.ini_options]
-addopts = "-vv -x"
+addopts = "-vv -x -n 2"
