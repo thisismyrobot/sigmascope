@@ -11,7 +11,7 @@ import sigma.validators.core
 import yaml
 
 
-def to_sigma(dark_networks, allowed_sources):
+def to_sigma(dark_networks, allowed_source_nets):
     # Need to work out correct fields to align with Splunk Common Information Model (CIM)
     rule_data = {
         'title': 'SigmaScope search',
@@ -26,8 +26,8 @@ def to_sigma(dark_networks, allowed_sources):
         }
     }
 
-    if allowed_sources:
-        rule_data['detection']['allowed_sources'] = {'src_ip': [network.exploded for network in allowed_sources]}
+    if allowed_source_nets:
+        rule_data['detection']['allowed_sources'] = {'src_ip': [network.exploded for network in allowed_source_nets]}
         rule_data['detection']['condition'] += ' and not allowed_sources'
 
     validator = sigma.validation.SigmaValidator.from_dict({'validators':['all']}, sigma.validators.core.validators)
@@ -90,16 +90,16 @@ def main(assigned_nets, reserved_nets, allowed_nets, target_spec, pipeline_spec,
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('reserved_csv')
-    parser.add_argument('assigned_csv')
+    parser.add_argument('reserved_csv', help='CSV file of reserved IP addresses and ranges (in CIDR notation)')
+    parser.add_argument('assigned_csv', help='CSV file of assigned IP addresses and ranges (in CIDR notation)')
     parser.add_argument('target_spec', help='sigma.backends.[module]:[constructor]')
-    parser.add_argument('pipeline_spec', help='Pass a pipeline YAML file path or sigma.pipelines.[module]:[constructor]')
-    parser.add_argument('--allowed_csv', default=None)
+    parser.add_argument('pipeline_spec', help='sigma.pipelines.[module]:[constructor] or pass a pipeline YAML file path')
+    parser.add_argument('--allowed_source_nets', help='CSV file of known-good allowed source addresses (e.g., internal scanners)', default=None)
     args = parser.parse_args()
     query = main(
         load_networks_from_csv(args.reserved_csv),
         load_networks_from_csv(args.assigned_csv),
-        (load_networks_from_csv(args.allowed_csv) if args.allowed_csv else []),
+        (load_networks_from_csv(args.allowed_source_nets) if args.allowed_source_nets else []),
         args.target_spec.split(':'),
         args.pipeline_spec if ':' not in args.pipeline_spec else args.pipeline_spec.split(':')
     )

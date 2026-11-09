@@ -74,7 +74,19 @@ When exporting, chose a backend and pipeline.
 Pipeline tweaks field names, backend (target) does the final conversion to the query.
 
 ```
-uv run sigmascope.py [reservations CSV file] [assigned CSV file] [backend spec] [pipeline spec]
+usage: sigmascope.py [-h] [--allowed_source_nets ALLOWED_SOURCE_NETS]
+                     reserved_csv assigned_csv target_spec pipeline_spec
+
+positional arguments:
+  reserved_csv          CSV file of reserved IP addresses and ranges (in CIDR notation)
+  assigned_csv          CSV file of assigned IP addresses and ranges (in CIDR notation)
+  target_spec           sigma.backends.[module]:[constructor]
+  pipeline_spec         sigma.pipelines.[module]:[constructor] or pass a pipeline YAML file path
+
+options:
+  -h, --help            show this help message and exit
+  --allowed_source_nets ALLOWED_SOURCE_NETS
+                        CSV file of known-good allowed source addresses (e.g., internal scanners)
 ```
 
 Examples:

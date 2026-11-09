@@ -6,7 +6,7 @@ def test_help_invocation():
     help_text = subprocess.run(['uv', 'run', 'py', 'sigmascope.py'], capture_output=True, text=True).stderr
 
     assert help_text.strip() == textwrap.dedent("""
-        usage: sigmascope.py [-h] [--allowed_csv ALLOWED_CSV]
+        usage: sigmascope.py [-h] [--allowed_source_nets ALLOWED_SOURCE_NETS]
                              reserved_csv assigned_csv target_spec pipeline_spec
         sigmascope.py: error: the following arguments are required: reserved_csv, assigned_csv, target_spec, pipeline_spec
     """).strip()
@@ -52,7 +52,7 @@ def test_pipeline_invocation_with_allowed_sources():
         'tests/data/assigned.csv',
         'sigma.backends.splunk:SplunkBackend',
         'pipelines/splunk_cim_firewall_logs.yaml',
-        '--allowed_csv=tests/data/allowed.csv'
+        '--allowed_source_nets=tests/data/allowed.csv'
     ], capture_output=True, text=True).stdout
 
     assert query_text.strip() == 'dest_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29") NOT (src_ip IN ("10.0.1.2/32", "10.0.4.0/29"))'
