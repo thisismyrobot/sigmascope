@@ -1,7 +1,7 @@
 import sigmascope
 
 
-def test_defender_xdr(net):
+def test_defender_xdr_yaml_pipeline(net):
     reserved_nets = [net("10.0.0.0/28")]
     assigned_nets = [
         net("10.0.0.1"),

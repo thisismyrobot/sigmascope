@@ -16,8 +16,8 @@ transformations:
   - id: defender_xdr_device_network_events_field_mapping
     type: field_name_mapping
     mapping:
-      dst_ip: RemoteIP
-      src_ip: LocalIP
+      dst_ip: RemoteIP|cidr
+      src_ip: LocalIP|cidr
     rule_conditions:
       - type: logsource
         category: network_connection
