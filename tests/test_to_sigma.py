@@ -21,7 +21,7 @@ def test_basic_sigma_rule(net):
           category: firewall
         detection:
           dark_networks:
-            dst_ip:
+            dst_ip|cidr:
             - 10.0.0.0/32
             - 10.0.0.2/31
             - 10.0.0.6/31
@@ -53,7 +53,7 @@ def test_sigma_rule_with_allowed_sources(net):
           category: firewall
         detection:
           dark_networks:
-            dst_ip:
+            dst_ip|cidr:
             - 10.0.0.0/32
             - 10.0.0.2/31
             - 10.0.0.6/31
@@ -64,6 +64,6 @@ def test_sigma_rule_with_allowed_sources(net):
             - 10.0.0.128/25
           condition: dark_networks and not allowed_sources
           allowed_sources:
-            src_ip:
+            src_ip|cidr:
             - 10.0.1.2/32
     """).strip()
