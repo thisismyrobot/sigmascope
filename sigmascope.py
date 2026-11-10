@@ -152,11 +152,23 @@ if __name__ == "__main__":
         "assigned_csv",
         help="CSV file of assigned IP addresses and ranges (in CIDR notation)",
     )
-    parser.add_argument("target_spec", help="sigma.backends.[module]:[constructor]")
+
     parser.add_argument(
-        "pipeline_spec",
-        help="sigma.pipelines.[module]:[constructor] or pass a pipeline YAML file path",
+        "-b", "-backend", help="Name of sigma.backend module - e.g., 'splunk'"
     )
+    parser.add_argument(
+        "-pm",
+        "-pipeline-module",
+        action="append",
+        help="Name of sigma.pipelines module - e.g., 'splunk_cim'",
+    )
+    parser.add_argument(
+        "-py",
+        "-pipeline-yaml",
+        action="append",
+        help="Path to a pipeline YAML definition",
+    )
+
     parser.add_argument(
         "--allowed_source_nets",
         help="CSV file of known-good allowed source addresses (e.g., internal scanners)",
