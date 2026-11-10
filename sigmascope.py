@@ -24,14 +24,18 @@ def to_sigma(
         "logsource": {"category": "firewall"},
         "detection": {
             "dark_networks": {
-                "dst_ip": [network.exploded for network in dark_networks]
+                "dst_ip": [
+                    network.exploded.replace("/32", "") for network in dark_networks
+                ]
             },
             "condition": "dark_networks",
         },
     }
     if allowed_source_nets:
         rule_data["detection"]["allowed_sources"] = {
-            "src_ip": [network.exploded for network in allowed_source_nets]
+            "src_ip": [
+                network.exploded.replace("/32", "") for network in allowed_source_nets
+            ]
         }
         rule_data["detection"]["condition"] += " and not allowed_sources"
     return yaml.safe_dump(rule_data, sort_keys=False)

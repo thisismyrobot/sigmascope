@@ -34,7 +34,7 @@ def test_pipeline_module_invocation():
     query_text = result.stdout
     assert (
         query_text.strip()
-        == 'dst_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")'
+        == 'dst_ip IN ("10.0.0.0", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")'
     )
 
 
@@ -58,7 +58,7 @@ def test_pipeline_file_invocation():
     query_text = result.stdout
     assert (
         query_text.strip()
-        == 'dest_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")'
+        == 'dest_ip IN ("10.0.0.0", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")'
     )
 
 
@@ -83,5 +83,5 @@ def test_pipeline_invocation_with_allowed_sources():
     query_text = result.stdout
     assert (
         query_text.strip()
-        == 'dest_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29") NOT (src_ip IN ("10.0.1.2/32", "10.0.4.0/29"))'
+        == 'dest_ip IN ("10.0.0.0", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29") NOT (src_ip IN ("10.0.1.2", "10.0.4.0/29"))'
     )
