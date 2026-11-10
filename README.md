@@ -12,7 +12,8 @@ The goal is to simplify the process of searching firewall logs for traffic targe
 
  - [x] Allow-list source networks
  - [x] KQL for Defender Advanced Threat Hunting
- - [ ] Negative test cases/error handling
+ - [x] Negative test cases/error handling
+ - [x] Type-checking
  - [ ] Enforce `allowed_backends`
  - [ ] Drop `/32` postfixes
  - [ ] Docker

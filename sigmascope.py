@@ -7,14 +7,14 @@ import logging
 import sys
 
 import sigma.collection
+import sigma.conversion.base
 import sigma.processing.pipeline
-import sigma.validators.core
 import yaml
 
 
-def to_sigma(dark_networks, allowed_source_nets):
+def to_sigma(dark_networks: list[ipaddress.IPv4Network], allowed_source_nets: list[ipaddress.IPv4Network]) -> str:
     # Need to work out correct fields to align with Splunk Common Information Model (CIM)
-    rule_data = {
+    rule_data: dict = {
         'title': 'SigmaScope search',
         'logsource': {
             'category': 'firewall'
@@ -32,32 +32,32 @@ def to_sigma(dark_networks, allowed_source_nets):
     return yaml.safe_dump(rule_data, sort_keys=False)
 
 
-def dark_networks(reserved, assigned):
+def dark_networks(reserved: list[ipaddress.IPv4Network], assigned: list[ipaddress.IPv4Network]) -> list[ipaddress.IPv4Network]:
     reserved_dark = list(reserved)
     for assigned_net in assigned:
-        expanded_reserved = []
+        expanded_reserved: list[ipaddress.IPv4Network] = []
         for reserved_net in reserved_dark:
             if assigned_net.subnet_of(reserved_net):
                 expanded_reserved.extend(reserved_net.address_exclude(assigned_net))
             else:
                 expanded_reserved.append(reserved_net)
-        reserved_dark = ipaddress.collapse_addresses(expanded_reserved)
+        reserved_dark = list(ipaddress.collapse_addresses(expanded_reserved))
     return reserved_dark
 
 
-def load_networks_from_csv(csv_file) -> list[ipaddress.IPv4Network]:
+def load_networks_from_csv(csv_file: str) -> list[ipaddress.IPv4Network]:
     ipv4_networks = []
     with open(csv_file, 'r') as f:
         reader = csv.reader(f)
         for (i, row) in enumerate(reader):
             try:
                 ipv4_networks.append(ipaddress.IPv4Network(row[0].strip()))
-            except IndexError, ValueError:
+            except (IndexError, ValueError):
                 logging.warning(f'Unable to parse valid IPv4 network from first entry in row {i+1}: {row}')
         return list(ipaddress.collapse_addresses(ipv4_networks))
 
 
-def load_backend(target_spec, pipeline_spec):
+def load_backend(target_spec: tuple, pipeline_spec: str | tuple) -> sigma.conversion.base.TextQueryBackend:
     # Load or create pipeline
     pipeline = None
     if isinstance(pipeline_spec, str):
@@ -93,19 +93,25 @@ def load_backend(target_spec, pipeline_spec):
         raise ValueError(f'Backend module {backend_mod_path} could not be imported')
 
     try:
-        constructor = getattr(backend_module, cls)
+        constructor: type[sigma.conversion.base.TextQueryBackend] = getattr(backend_module, cls)
     except AttributeError:
         raise ValueError(f'Backend module {backend_mod_path} does not have the class {cls}')
 
     return constructor(pipeline)
 
 
-def main(assigned_nets, reserved_nets, allowed_nets, target_spec, pipeline_spec, output_path=None):
+def main(
+        assigned_nets: list[ipaddress.IPv4Network],
+        reserved_nets: list[ipaddress.IPv4Network],
+        allowed_nets: list[ipaddress.IPv4Network],
+        target_spec: tuple,
+        pipeline_spec: (str | tuple)
+    ) -> str:
     dark_nets = dark_networks(assigned_nets, reserved_nets)
     sigma_rule_yaml = to_sigma(dark_nets, allowed_nets)
     sigma_rule_collection = sigma.collection.SigmaCollection.from_yaml(sigma_rule_yaml)
     backend = load_backend(target_spec, pipeline_spec)
-    query = backend.convert(sigma_rule_collection)[0]
+    query: str = backend.convert(sigma_rule_collection)[0]
     return query
 
 
