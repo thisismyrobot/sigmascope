@@ -19,5 +19,5 @@ def test_defender_xdr_yaml_pipeline(net):
 
     assert (
         xdr_filter
-        == '(RemoteIP in~ ("10.0.0.0", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")) and (not(LocalIP =~ "10.0.0.9"))'
+        == '(RemoteIP in~ ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")) and (not(LocalIP =~ "10.0.0.9/32"))'
     )

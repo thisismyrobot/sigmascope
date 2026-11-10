@@ -123,7 +123,7 @@ uv run py.test
  - [x] Negative test cases/error handling
  - [x] Type-checking
  - [ ] Enforce `allowed_backends`
- - [x] Drop `/32` postfixes to save space
+ - ~~[x] Drop `/32` postfixes to save space~~ Restored by KQL, not worth it.
  - [ ] Do I need `ipv4_is_in_any_range` for KQL?
  - [ ] Docker
  - [ ] Templates
