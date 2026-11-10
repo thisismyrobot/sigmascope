@@ -57,7 +57,7 @@ def load_networks_from_csv(csv_file: str) -> list[ipaddress.IPv4Network]:
         for i, row in enumerate(reader):
             try:
                 ipv4_networks.append(ipaddress.IPv4Network(row[0].strip()))
-            except IndexError, ValueError:
+            except (IndexError, ValueError) as _:
                 logging.warning(
                     f"Unable to parse valid IPv4 network from first entry in row {i+1}: {row}"
                 )
