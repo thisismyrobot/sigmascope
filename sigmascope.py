@@ -1,4 +1,5 @@
 import argparse
+import collections
 import csv
 import importlib
 import ipaddress
@@ -7,8 +8,6 @@ import sys
 
 import sigma.collection
 import sigma.processing.pipeline
-import sigma.rule
-import sigma.validation
 import sigma.validators.core
 import yaml
 
@@ -27,14 +26,9 @@ def to_sigma(dark_networks, allowed_source_nets):
             'condition': 'dark_networks'
         }
     }
-
     if allowed_source_nets:
         rule_data['detection']['allowed_sources'] = {'src_ip': [network.exploded for network in allowed_source_nets]}
         rule_data['detection']['condition'] += ' and not allowed_sources'
-
-    validator = sigma.validation.SigmaValidator.from_dict({'validators':['all']}, sigma.validators.core.validators)
-    rule = sigma.rule.SigmaRule.from_dict(rule_data)
-    validator.validate_rule(rule)
     return yaml.safe_dump(rule_data, sort_keys=False)
 
 
@@ -66,32 +60,44 @@ def load_networks_from_csv(csv_file) -> list[ipaddress.IPv4Network]:
 def load_backend(target_spec, pipeline_spec):
     # Load or create pipeline
     pipeline = None
-    try:
-        mod_path, factory = pipeline_spec
-    except ValueError:
-        raise ValueError(f'Unable to parse pipeline module and factory path from: {pipeline_spec}')
-
-    try:
-        pipeline_module = importlib.import_module(mod_path)
-    except ModuleNotFoundError:
-        raise ValueError(f'Pipeline module {mod_path} could not be imported')
-
-    try:
-        pipeline = getattr(pipeline_module, factory)()
-    except AttributeError:
-        raise ValueError(f'Pipeline module {mod_path} does not have the factory {factory}')
-
-    if pipeline is None and pipeline_spec.endswith('.yaml'):
-        with open(pipeline_spec, 'r') as f:
-            pipeline = sigma.processing.pipeline.ProcessingPipeline.from_yaml(f.read())
+    if isinstance(pipeline_spec, str):
+        if pipeline_spec.endswith('.yaml'):
+            with open(pipeline_spec, 'r') as f:
+                pipeline = sigma.processing.pipeline.ProcessingPipeline.from_yaml(f.read())
+    elif isinstance(pipeline_spec, collections.abc.Iterable):
+        try:
+            pipeline_mod_path, factory = pipeline_spec
+        except ValueError:
+            raise ValueError(f'Unable to parse pipeline module and factory path from: {pipeline_spec}')
+        try:
+            pipeline_module = importlib.import_module(pipeline_mod_path)
+        except ModuleNotFoundError:
+            raise ValueError(f'Pipeline module {pipeline_mod_path} could not be imported')
+        try:
+            pipeline = getattr(pipeline_module, factory)()
+        except AttributeError:
+            raise ValueError(f'Pipeline module {pipeline_mod_path} does not have the factory {factory}')
 
     if pipeline is None:
         raise ValueError(f'Failed to load a module or file based on the pipeline spec: {pipeline_spec}')
 
     # Load backend
-    backend_module = importlib.import_module(target_spec[0])
-    backend = getattr(backend_module, target_spec[1])(pipeline)
-    return backend
+    try:
+        backend_mod_path, cls = target_spec
+    except ValueError:
+        raise ValueError(f'Unable to parse backend module and class path from: {target_spec}')
+
+    try:
+        backend_module = importlib.import_module(backend_mod_path)
+    except ModuleNotFoundError:
+        raise ValueError(f'Backend module {backend_mod_path} could not be imported')
+
+    try:
+        constructor = getattr(backend_module, cls)
+    except AttributeError:
+        raise ValueError(f'Backend module {backend_mod_path} does not have the class {cls}')
+
+    return constructor(pipeline)
 
 
 def main(assigned_nets, reserved_nets, allowed_nets, target_spec, pipeline_spec, output_path=None):

@@ -17,11 +17,13 @@ def test_csv_load_mixed_quality_data_skips_bad_and_logs_issues(caplog, net):
         net('10.0.0.4/31'),
         net('10.0.0.9/32'),
     ]
-    assert caplog.text.strip() == textwrap.dedent("""
-        WARNING  root:sigmascope.py:62 Unable to parse valid IPv4 network from first entry in row 1: ['heading', 'extra']
-        WARNING  root:sigmascope.py:62 Unable to parse valid IPv4 network from first entry in row 4: []
-        WARNING  root:sigmascope.py:62 Unable to parse valid IPv4 network from first entry in row 7: ['foo', 'bar']
-        WARNING  root:sigmascope.py:62 Unable to parse valid IPv4 network from first entry in row 8: ['10.0.0', '', '']
-        WARNING  root:sigmascope.py:62 Unable to parse valid IPv4 network from first entry in row 9: []
-        WARNING  root:sigmascope.py:62 Unable to parse valid IPv4 network from first entry in row 10: []
+    logs = caplog.text.strip()
+    line = logs.split('\n')[0].split(' ')[2]
+    assert logs.replace(line, 'root:sigmascope.py') == textwrap.dedent("""
+        WARNING  root:sigmascope.py Unable to parse valid IPv4 network from first entry in row 1: ['heading', 'extra']
+        WARNING  root:sigmascope.py Unable to parse valid IPv4 network from first entry in row 4: []
+        WARNING  root:sigmascope.py Unable to parse valid IPv4 network from first entry in row 7: ['foo', 'bar']
+        WARNING  root:sigmascope.py Unable to parse valid IPv4 network from first entry in row 8: ['10.0.0', '', '']
+        WARNING  root:sigmascope.py Unable to parse valid IPv4 network from first entry in row 9: []
+        WARNING  root:sigmascope.py Unable to parse valid IPv4 network from first entry in row 10: []
     """).strip()

@@ -1,0 +1,5 @@
+name: invalid_pipeline_config
+  dst_ip: dest_ip
+    rule_conditions:
+      - type: logsource
+        category: firewall
