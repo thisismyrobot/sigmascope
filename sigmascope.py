@@ -11,6 +11,8 @@ import sigma.conversion.base
 import sigma.processing.pipeline
 import yaml
 
+logger = logging.getLogger(__name__)
+
 
 def to_sigma(
     dark_networks: list[ipaddress.IPv4Network],
@@ -58,7 +60,7 @@ def load_networks_from_csv(csv_file: str) -> list[ipaddress.IPv4Network]:
             try:
                 ipv4_networks.append(ipaddress.IPv4Network(row[0].strip()))
             except (IndexError, ValueError) as _:
-                logging.warning(
+                logger.warning(
                     f"Unable to parse valid IPv4 network from first entry in row {i+1}: {row}"
                 )
         return list(ipaddress.collapse_addresses(ipv4_networks))

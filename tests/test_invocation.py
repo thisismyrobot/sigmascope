@@ -4,7 +4,7 @@ import textwrap
 
 def test_help_invocation():
     help_text = subprocess.run(
-        ["uv", "run", "sigmascope.py"], capture_output=True, text=True
+        ["uv", "run", "sigmascope.py"], check=False, capture_output=True, text=True
     ).stderr
 
     assert help_text.strip() == textwrap.dedent("""
@@ -25,6 +25,7 @@ def test_pipeline_module_invocation():
             "sigma.backends.splunk:SplunkBackend",
             "sigma.pipelines.splunk:splunk_windows_pipeline",
         ],
+        check=True,
         capture_output=True,
         text=True,
     )
@@ -48,6 +49,7 @@ def test_pipeline_file_invocation():
             "sigma.backends.splunk:SplunkBackend",
             "pipelines/splunk_cim_firewall_logs.yaml",
         ],
+        check=True,
         capture_output=True,
         text=True,
     )
@@ -72,6 +74,7 @@ def test_pipeline_invocation_with_allowed_sources():
             "pipelines/splunk_cim_firewall_logs.yaml",
             "--allowed_source_nets=tests/data/allowed.csv",
         ],
+        check=True,
         capture_output=True,
         text=True,
     )
