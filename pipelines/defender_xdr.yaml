@@ -1,15 +1,14 @@
 name: defender_xdr_field_mapping
 priority: 1
-description: |
-  Maps firewall log concepts of src and destination addresses to constructs used
-  in sysmon and OS logs that include LocalIP and RemoteIP. This allows for
-  Defender XDR searches based on the same inputs.
+# Maps firewall log concepts of src and destination addresses to constructs used
+# in sysmon and OS logs that include LocalIP and RemoteIP. This allows for
+# Defender XDR searches based on the same inputs.
 allowed_backends:
   - kusto
 transformations:
   - id: redirect_logsource
     type: change_logsource
-    # network_connection maps to correct event table in the kusto microsoft_xdr pipeline. 
+    # network_connection maps to correct event table in the kusto microsoft_xdr pipeline.
     category: network_connection
     rule_conditions:
       - type: logsource
