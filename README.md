@@ -122,6 +122,14 @@ uv sync --all-extras
 uv run py.test
 ```
 
+## TODO (v1)
+
+ - [ ] External sigma support?
+ - [ ] Docker?
+ - [ ] Better language on plugins vs backends vs pipelines (and -f flag)
+ - [ ] Other plugins/backends?
+ - [ ] Subprocess call in data flow diagram
+
 ## Thank you
 
 sigmascope heavily leverages and appreciates `pysigma` for output generation.
