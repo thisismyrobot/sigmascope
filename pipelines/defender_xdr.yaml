@@ -26,3 +26,6 @@ postprocessing:
   - type: replace
     pattern: "RemoteIP in~ [(]"
     replacement: "ipv4_is_in_any_range(RemoteIP, "
+  - type: replace
+    pattern: "LocalIP in~ [(]"
+    replacement: "ipv4_is_in_any_range(LocalIP, "
