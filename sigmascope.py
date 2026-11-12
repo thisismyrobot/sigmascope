@@ -84,7 +84,7 @@ def run_conversion(backend, pipelines, sigma_rule_yaml):
         capture_output=True,
     )
     if result.returncode == 0:
-        return result.stdout
+        return result.stdout.strip()
     else:
         raise Exception(
             f"Failed to run conversion pipeline, with error: {result.stderr}"
