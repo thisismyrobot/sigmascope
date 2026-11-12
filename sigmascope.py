@@ -1,14 +1,10 @@
 import argparse
-import collections
 import csv
-import importlib
 import ipaddress
 import logging
+import subprocess
 import sys
 
-import sigma.collection
-import sigma.conversion.base
-import sigma.processing.pipeline
 import yaml
 
 logger = logging.getLogger(__name__)
@@ -24,14 +20,14 @@ def to_sigma(
         "logsource": {"category": "firewall"},
         "detection": {
             "dark_networks": {
-                "dst_ip|cidr": [network.exploded for network in dark_networks]
+                "dst_ip": [network.exploded for network in dark_networks]
             },
             "condition": "dark_networks",
         },
     }
     if allowed_source_nets:
         rule_data["detection"]["allowed_sources"] = {
-            "src_ip|cidr": [network.exploded for network in allowed_source_nets]
+            "src_ip": [network.exploded for network in allowed_source_nets]
         }
         rule_data["detection"]["condition"] += " and not allowed_sources"
     return yaml.safe_dump(rule_data, sort_keys=False)
@@ -66,79 +62,45 @@ def load_networks_from_csv(csv_file: str) -> list[ipaddress.IPv4Network]:
         return list(ipaddress.collapse_addresses(ipv4_networks))
 
 
-def load_backend(
-    target_spec: tuple, pipeline_spec: str | tuple
-) -> sigma.conversion.base.TextQueryBackend:
-    # Load or create pipeline
-    pipeline = None
-    if isinstance(pipeline_spec, str):
-        if pipeline_spec.endswith(".yaml"):
-            with open(pipeline_spec, "r") as f:
-                pipeline = sigma.processing.pipeline.ProcessingPipeline.from_yaml(
-                    f.read()
-                )
-    elif isinstance(pipeline_spec, collections.abc.Iterable):
-        try:
-            pipeline_mod_path, factory = pipeline_spec
-        except ValueError:
-            raise ValueError(
-                f"Unable to parse pipeline module and factory path from: {pipeline_spec}"
-            )
-        try:
-            pipeline_module = importlib.import_module(pipeline_mod_path)
-        except ModuleNotFoundError:
-            raise ValueError(
-                f"Pipeline module {pipeline_mod_path} could not be imported"
-            )
-        try:
-            pipeline = getattr(pipeline_module, factory)()
-        except AttributeError:
-            raise ValueError(
-                f"Pipeline module {pipeline_mod_path} does not have the factory {factory}"
-            )
-
-    if pipeline is None:
-        raise ValueError(
-            f"Failed to load a module or file based on the pipeline spec: {pipeline_spec}"
+def run_conversion(backend, pipelines, sigma_rule_yaml):
+    command = [
+        "uv",
+        "run",
+        "sigma",
+        "convert",
+        "--pipeline-check",
+        "--verbose",
+        "-t",
+        backend,
+    ]
+    for pipeline in pipelines:
+        command.extend(["-p", pipeline])
+    command.append("-")
+    result = subprocess.run(
+        command,
+        check=False,
+        input=sigma_rule_yaml,
+        text=True,
+        capture_output=True,
+    )
+    if result.returncode == 0:
+        return result.stdout
+    else:
+        raise Exception(
+            f"Failed to run conversion pipeline, with error: {result.stderr}"
         )
-
-    # Load backend
-    try:
-        backend_mod_path, cls = target_spec
-    except ValueError:
-        raise ValueError(
-            f"Unable to parse backend module and class path from: {target_spec}"
-        )
-
-    try:
-        backend_module = importlib.import_module(backend_mod_path)
-    except ModuleNotFoundError:
-        raise ValueError(f"Backend module {backend_mod_path} could not be imported")
-
-    try:
-        constructor: type[sigma.conversion.base.TextQueryBackend] = getattr(
-            backend_module, cls
-        )
-    except AttributeError:
-        raise ValueError(
-            f"Backend module {backend_mod_path} does not have the class {cls}"
-        )
-
-    return constructor(pipeline)
 
 
 def main(
     assigned_nets: list[ipaddress.IPv4Network],
     reserved_nets: list[ipaddress.IPv4Network],
     allowed_nets: list[ipaddress.IPv4Network],
-    target_spec: tuple,
-    pipeline_spec: str | tuple,
+    target_spec: str,
+    pipeline: list[str],
 ) -> str:
     dark_nets = dark_networks(assigned_nets, reserved_nets)
     sigma_rule_yaml = to_sigma(dark_nets, allowed_nets)
-    sigma_rule_collection = sigma.collection.SigmaCollection.from_yaml(sigma_rule_yaml)
-    backend = load_backend(target_spec, pipeline_spec)
-    query: str = backend.convert(sigma_rule_collection)[0]
+    query = run_conversion(target_spec, pipeline, sigma_rule_yaml)
     return query
 
 
@@ -154,19 +116,17 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "-b", "-backend", help="Name of sigma.backend module - e.g., 'splunk'"
+        "-b",
+        "--backend",
+        required=True,
+        help="Name of sigma.backend module - e.g., 'splunk'",
     )
     parser.add_argument(
-        "-pm",
-        "-pipeline-module",
+        "-p",
+        "--pipeline",
+        required=True,
         action="append",
-        help="Name of sigma.pipelines module - e.g., 'splunk_cim'",
-    )
-    parser.add_argument(
-        "-py",
-        "-pipeline-yaml",
-        action="append",
-        help="Path to a pipeline YAML definition",
+        help="Name of sigma.pipelines module - e.g., 'splunk_cim', or path to a pipeline YAML definition",
     )
 
     parser.add_argument(
@@ -183,11 +143,7 @@ if __name__ == "__main__":
             if args.allowed_source_nets
             else []
         ),
-        args.target_spec.split(":"),
-        (
-            args.pipeline_spec
-            if ":" not in args.pipeline_spec
-            else args.pipeline_spec.split(":")
-        ),
+        args.backend,
+        args.pipeline,
     )
     sys.stdout.write(query)
