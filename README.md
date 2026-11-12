@@ -6,7 +6,9 @@ Converts IPAM information sets into darknet-detecting SIEM queries, via Sigma.
 
 ## Purpose
 
-The goal is to simplify the process of searching firewall logs for traffic targeting IP darknet ranges, buy converting assigned, reserved, and know-good source ip addresses and range information into threat hunting queries.
+The goal is to simplify the process of searching firewall logs for traffic
+targeting IP darknet ranges, buy converting assigned, reserved, and know-good
+source ip addresses and range information into threat hunting queries.
 
 ## Requirements
 
@@ -50,11 +52,11 @@ Enable backends using uv extras (choose from `splunk`, `kql`):
 
 ### Pipelines
 
-To fine-tune output fields beyond the pipelines included in the pySigma backend modules, use YAML pipelines in: [`src/pipelines/`](pipelines/) or create your own.
+To fine-tune output fields beyond the pipelines included in the pySigma backend
+modules, use YAML pipelines in: [`src/pipelines/`](pipelines/) or create your
+own.
 
 [pySigma reference](https://sigmahq-pysigma.readthedocs.io/en/latest/guides/processing_pipelines.html)
-
-https://github.com/SigmaHQ/pySigma-plugin-directory/blob/main/pySigma-plugins-v1.json
 
 ### Input data
 
@@ -62,19 +64,20 @@ IPAM data needs to be prepared into two files:
 
 #### Reserved addresses (CSV)
 
-Simple list of IP addresses and ranges that are reserved for future use.
+Simple list of IP addresses and ranges (CIDR format) that are reserved for future use.
 
 [Example](tests/data/reserved.csv)
 
 #### Assigned addresses (CSV)
 
-Simple list of IP addresses and ranges that are assigned to assets.
+Simple list of IP addresses and ranges (CIDR format) that are assigned to assets.
 
 [Example](tests/data/assigned.csv)
 
 ### Allowed addresses
 
-Additionally, you can provide a list of addresses or ranges that you are expecting - for instance security scanning tools.
+Additionally, you can provide a list of addresses or ranges (CIDR format) that
+you are expecting to scan IP darknets - for instance security scanning tools.
 
 [Example](tests/data/allowed.csv)
 
@@ -84,7 +87,8 @@ Additionally, you can provide a list of addresses or ranges that you are expecti
 
 When exporting, chose a backend and pipeline.
 
-Pipeline tweaks field names, backend (target) does the final conversion to the query.
+Pipeline tweaks field names, backend (target) does the final conversion to the
+query.
 
 ```
 usage: sigmascope.py [-h] -b BACKEND -p PIPELINE [--allowed_source_nets ALLOWED_SOURCE_NETS] reserved_csv assigned_csv
@@ -107,7 +111,7 @@ Examples:
 ```
 uv run sigmascope.py -b splunk -p pipelines\splunk_cim_firewall_logs.yaml tests\data\reserved.csv tests\data\assigned.csv
 uv run sigmascope.py -b splunk -p splunk_windows tests\data\reserved.csv tests\data\assigned.csv
-uv run sigmascope.py -b kusto -p pipelines/defender_xdr.yaml tests\data\reserved.csv tests\data\assigned.csv
+uv run sigmascope.py -b kusto -p pipelines/defender_xdr.yaml tests\data\reserved.csv tests\data\assigned.csv --allowed_source_nets --allowed_source_nets test\data\allowed.csv
 uv run sigmascope.py -b kusto -p pipelines/defender_xdr.yaml -p microsoft_xdr tests\data\reserved.csv tests\data\assigned.csv
 ```
 
