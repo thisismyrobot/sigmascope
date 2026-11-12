@@ -8,10 +8,10 @@ def test_help_invocation():
     ).stderr
 
     assert help_text.strip() == textwrap.dedent("""
-        usage: sigmascope.py [-h] -b BACKEND -p PIPELINE
-                             [--allowed_source_nets ALLOWED_SOURCE_NETS]
-                             reserved_csv assigned_csv
-        sigmascope.py: error: the following arguments are required: reserved_csv, assigned_csv, -b/--backend, -p/--pipeline
+        usage: sigmascope.py [-h] -t TARGET -p PIPELINE
+                             [--allowed_sources_file ALLOWED_SOURCES_FILE]
+                             reserved_file assigned_file
+        sigmascope.py: error: the following arguments are required: reserved_file, assigned_file, -t/--target, -p/--pipeline
     """).strip()
 
 
@@ -21,7 +21,7 @@ def test_pipeline_module_invocation():
             "uv",
             "run",
             "sigmascope.py",
-            "-b",
+            "-t",
             "splunk",
             "-p",
             "splunk_windows",
@@ -47,7 +47,7 @@ def test_pipeline_file_invocation():
             "uv",
             "run",
             "sigmascope.py",
-            "-b",
+            "-t",
             "splunk",
             "-p",
             "pipelines/splunk_cim_firewall_logs.yaml",
@@ -73,11 +73,11 @@ def test_pipeline_invocation_with_allowed_sources():
             "uv",
             "run",
             "sigmascope.py",
-            "-b",
+            "-t",
             "splunk",
             "-p",
             "pipelines/splunk_cim_firewall_logs.yaml",
-            "--allowed_source_nets=tests/data/allowed.csv",
+            "--allowed_sources_file=tests/data/allowed.csv",
             "tests/data/reserved.csv",
             "tests/data/assigned.csv",
         ],

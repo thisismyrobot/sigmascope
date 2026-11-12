@@ -111,11 +111,11 @@ def main(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "reserved_csv",
+        "reserved_file",
         help="CSV file of reserved IP addresses and ranges (in CIDR notation)",
     )
     parser.add_argument(
-        "assigned_csv",
+        "assigned_file",
         help="CSV file of assigned IP addresses and ranges (in CIDR notation)",
     )
 
@@ -134,17 +134,17 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--allowed_source_nets",
+        "--allowed_sources_file",
         help="CSV file of known-good allowed source addresses (e.g., internal scanners)",
         default=None,
     )
     args = parser.parse_args()
     query = main(
-        load_networks_from_csv(args.reserved_csv),
-        load_networks_from_csv(args.assigned_csv),
+        load_networks_from_csv(args.reserved_file),
+        load_networks_from_csv(args.assigned_file),
         (
-            load_networks_from_csv(args.allowed_source_nets)
-            if args.allowed_source_nets
+            load_networks_from_csv(args.allowed_sources_file)
+            if args.allowed_sources_file
             else []
         ),
         args.target,
