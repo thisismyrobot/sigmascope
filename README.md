@@ -1,4 +1,4 @@
-# SigmaScope (WIP)
+# SigmaScope
 
 SigmaScope is Network telescope/IP darknet threat hunting query generator.
 
