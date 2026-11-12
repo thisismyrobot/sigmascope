@@ -13,13 +13,13 @@ def test_splunk_cim_using_yaml_pipeline(net):
         reserved_nets,
         assigned_nets,
         allowed_source_nets,
-        target_spec=("sigma.backends.splunk", "SplunkBackend"),
-        pipeline_spec="pipelines/splunk_cim_firewall_logs.yaml",
+        target_spec="splunk",
+        pipeline=["pipelines/splunk_cim_firewall_logs.yaml"],
     )
 
     assert (
         cim_search
-        == 'dest_ip IN ("10.0.0.0", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29") NOT (src_ip IN ("10.0.0.9", "10.0.0.10"))'
+        == 'dest_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29") NOT (src_ip IN ("10.0.0.9/32", "10.0.0.10/32"))'
     )
 
 
@@ -34,13 +34,13 @@ def test_splunk_cim_using_module_pipeline(net):
         reserved_nets,
         assigned_nets,
         [],
-        target_spec=("sigma.backends.splunk", "SplunkBackend"),
+        target_spec="splunk",
         # Chosen data model is a no-op in this context, this tests it loads though.
-        pipeline_spec=("sigma.pipelines.splunk", "splunk_windows_pipeline"),
+        pipeline=["splunk_windows"],
     )
 
     # The output here isn't what's useful for Splunk, but it is proof the module loaded and ran.
     assert (
         cim_search
-        == 'dst_ip IN ("10.0.0.0", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")'
+        == 'dst_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")'
     )

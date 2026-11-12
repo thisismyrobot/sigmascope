@@ -6,6 +6,7 @@ dependencies = [
     "pip>=26.3",
     "pysigma>=1.0.0",
     "pyyaml>=6.0.3",
+    "sigma-cli>=3.1.0",
 ]
 
 [project.optional-dependencies]
@@ -26,7 +27,7 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "-vv -n 2"
+addopts = "-vv -x -n 6"
 
 [tool.mypy]
 python_version = "3.14"
