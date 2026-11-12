@@ -66,11 +66,15 @@ def load_networks_from_csv(csv_file: str) -> list[ipaddress.IPv4Network]:
         return list(ipaddress.collapse_addresses(ipv4_networks))
 
 
-def run_conversion(backend: str, pipelines: list[str], sigma_rule_yaml: str) -> str:
+def run_conversion(
+    backend: str,
+    pipelines: list[str],
+    sigma_rule_yaml: str,
+    use_global_sigma: bool = False,
+) -> str:
+    sigma = ["sigma"] if use_global_sigma else ["uv", "run", "sigma"]
     command = [
-        "uv",
-        "run",
-        "sigma",
+        *sigma,
         "convert",
         "--pipeline-check",
         "--verbose",
@@ -101,10 +105,11 @@ def main(
     allowed_nets: list[ipaddress.IPv4Network],
     target_spec: str,
     pipeline: list[str],
+    use_global_sigma: bool = False,
 ) -> str:
     dark_nets = dark_networks(assigned_nets, reserved_nets)
     sigma_rule_yaml = to_sigma(dark_nets, allowed_nets)
-    query = run_conversion(target_spec, pipeline, sigma_rule_yaml)
+    query = run_conversion(target_spec, pipeline, sigma_rule_yaml, use_global_sigma)
     return query
 
 
@@ -138,6 +143,13 @@ if __name__ == "__main__":
         help="CSV file of known-good allowed source addresses (e.g., internal scanners)",
         default=None,
     )
+
+    parser.add_argument(
+        "--global-sigma",
+        help="Use a globally-installed sigma-cli instance instead of the bundled version",
+        default=False,
+    )
+
     args = parser.parse_args()
     query = main(
         load_networks_from_csv(args.reserved_file),
@@ -149,5 +161,6 @@ if __name__ == "__main__":
         ),
         args.target,
         args.pipeline,
+        args.global_sigma,
     )
     sys.stdout.write(query)

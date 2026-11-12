@@ -91,28 +91,31 @@ Pipeline tweaks field names, backend (target) does the final conversion to the
 query.
 
 ```
-usage: sigmascope.py [-h] -b BACKEND -p PIPELINE [--allowed_source_nets ALLOWED_SOURCE_NETS] reserved_csv assigned_csv
+usage: sigmascope.py [-h] -t TARGET -p PIPELINE [--allowed_sources_file ALLOWED_SOURCES_FILE]
+                     [--global-sigma GLOBAL_SIGMA]
+                     reserved_file assigned_file
 
 positional arguments:
-  reserved_csv          CSV file of reserved IP addresses and ranges (in CIDR notation)
-  assigned_csv          CSV file of assigned IP addresses and ranges (in CIDR notation)
+  reserved_file         CSV file of reserved IP addresses and ranges (in CIDR notation)
+  assigned_file         CSV file of assigned IP addresses and ranges (in CIDR notation)
 
 options:
   -h, --help            show this help message and exit
-  -b, --backend BACKEND
-                        Name of sigma.backend module - e.g., 'splunk'
+  -t, --target TARGET   Name of target sigma.backend module - e.g., 'splunk'
   -p, --pipeline PIPELINE
                         Name of sigma.pipelines module - e.g., 'splunk_cim', or path to a pipeline YAML definition
-  --allowed_source_nets ALLOWED_SOURCE_NETS
+  --allowed_sources_file ALLOWED_SOURCES_FILE
                         CSV file of known-good allowed source addresses (e.g., internal scanners)
+  --global-sigma GLOBAL_SIGMA
+                        Use a globally-installed sigma-cli instance instead of the bundled version
 ```
 
 Examples:
 ```
-uv run sigmascope.py -b splunk -p pipelines\splunk_cim_firewall_logs.yaml tests\data\reserved.csv tests\data\assigned.csv
-uv run sigmascope.py -b splunk -p splunk_windows tests\data\reserved.csv tests\data\assigned.csv
-uv run sigmascope.py -b kusto -p pipelines/defender_xdr.yaml tests\data\reserved.csv tests\data\assigned.csv --allowed_source_nets --allowed_source_nets test\data\allowed.csv
-uv run sigmascope.py -b kusto -p pipelines/defender_xdr.yaml -p microsoft_xdr tests\data\reserved.csv tests\data\assigned.csv
+uv run sigmascope.py -t splunk -p pipelines\splunk_cim_firewall_logs.yaml tests\data\reserved.csv tests\data\assigned.csv
+uv run sigmascope.py -t splunk -p splunk_windows tests\data\reserved.csv tests\data\assigned.csv
+uv run sigmascope.py -t kusto -p pipelines/defender_xdr.yaml tests\data\reserved.csv tests\data\assigned.csv --allowed_source_nets --allowed_source_nets test\data\allowed.csv
+uv run sigmascope.py -t kusto -p pipelines/defender_xdr.yaml -p microsoft_xdr tests\data\reserved.csv tests\data\assigned.csv
 ```
 
 ## Tests
@@ -124,7 +127,7 @@ uv run py.test
 
 ## TODO (v1)
 
- - [ ] External sigma support?
+ - [x] External sigma support?
  - [ ] Docker?
  - [ ] Better language on plugins vs backends vs pipelines (and -f flag)
  - [ ] Note on included pipelines tuned for the best possible queries

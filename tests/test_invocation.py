@@ -10,6 +10,7 @@ def test_help_invocation():
     assert help_text.strip() == textwrap.dedent("""
         usage: sigmascope.py [-h] -t TARGET -p PIPELINE
                              [--allowed_sources_file ALLOWED_SOURCES_FILE]
+                             [--global-sigma GLOBAL_SIGMA]
                              reserved_file assigned_file
         sigmascope.py: error: the following arguments are required: reserved_file, assigned_file, -t/--target, -p/--pipeline
     """).strip()
