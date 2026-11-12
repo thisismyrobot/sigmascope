@@ -42,12 +42,12 @@ sigmascope -.stdout.-> outputs
 
 ### Output formats
 
-Output formats are tied to [pySigma backends](https://github.com/SigmaHQ/pySigma#related-projects).
+Output formats are tied to [pySigma backends](https://sigmahq.io/docs/digging-deeper/backends.html).
 
-Enable backends using uv extras (choose from `splunk`, `kql`):
+Enable backends using uv extras (choose from `splunk`, `kusto`):
  - Splunk: `uv sync --extra splunk`
- - KQL: `uv sync --extra kql`
- - Multiple `uv sync --extra splunk --extra kql`
+ - KQL: `uv sync --extra kusto`
+ - Multiple `uv sync --extra splunk --extra kusto`
  - All of them: `uv sync --all-extras`
 
 ### Pipelines

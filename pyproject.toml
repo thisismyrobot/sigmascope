@@ -13,7 +13,7 @@ dependencies = [
 splunk = [
     "pysigma-backend-splunk>=2.1.0"
 ]
-kql = [
+kusto = [
     "pysigma-backend-kusto>=1.0.0"
 ]
 
