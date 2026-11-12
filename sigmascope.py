@@ -10,6 +10,10 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
+class SigmaExecutionException(Exception):
+    pass
+
+
 def to_sigma(
     dark_networks: list[ipaddress.IPv4Network],
     allowed_source_nets: list[ipaddress.IPv4Network],
@@ -62,7 +66,7 @@ def load_networks_from_csv(csv_file: str) -> list[ipaddress.IPv4Network]:
         return list(ipaddress.collapse_addresses(ipv4_networks))
 
 
-def run_conversion(backend, pipelines, sigma_rule_yaml):
+def run_conversion(backend: str, pipelines: list[str], sigma_rule_yaml: str) -> str:
     command = [
         "uv",
         "run",
@@ -86,7 +90,7 @@ def run_conversion(backend, pipelines, sigma_rule_yaml):
     if result.returncode == 0:
         return result.stdout.strip()
     else:
-        raise Exception(
+        raise SigmaExecutionException(
             f"Failed to run conversion pipeline, with error: {result.stderr}"
         )
 
