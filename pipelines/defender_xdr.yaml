@@ -21,3 +21,8 @@ transformations:
     rule_conditions:
       - type: logsource
         category: network_connection
+postprocessing:
+  # PySigma does not support conversion to ipv4_is_in_any_range
+  - type: replace
+    pattern: "RemoteIP in~ [(]"
+    replacement: "ipv4_is_in_any_range(RemoteIP, "
