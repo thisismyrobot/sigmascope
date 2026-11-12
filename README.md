@@ -118,20 +118,6 @@ uv sync --all-extras
 uv run py.test
 ```
 
-## TODO
-
- - [x] Allow-list source networks
- - [x] KQL for Defender Advanced Threat Hunting
- - [x] Negative test cases/error handling
- - [x] Type-checking
- - [ ] Enforce `allowed_backends`
- - ~~[x] Drop `/32` postfixes to save space~~ Restored by KQL, not worth it.
- - [ ] Do I need `ipv4_is_in_any_range` for KQL?
- - [ ] Docker
- - [ ] Templates
- - [ ] Sigma debug output
- - [ ] IPv6?
-
 ## Thank you
 
 sigmascope heavily leverages and appreciates `pysigma` for output generation.
