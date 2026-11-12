@@ -15,7 +15,7 @@ def test_defender_xdr_yaml_pipeline_expands_remote_ip_list(net):
 
     assert (
         xdr_filter
-        == '(ipv4_is_in_any_range(RemoteIP, "10.0.0.0", "10.0.0.2/31", "10.0.0.4/30", "10.0.0.8/29")) and (not(LocalIP =~ "10.0.0.9"))'
+        == '(ipv4_is_in_any_range(RemoteIP, "10.0.0.0/32", "10.0.0.2/31", "10.0.0.4/30", "10.0.0.8/29")) and (not(LocalIP =~ "10.0.0.9"))'
     )
 
 
@@ -70,7 +70,7 @@ def test_defender_xdr_yaml_pipeline_complex(net):
 
     assert (
         xdr_filter
-        == '(ipv4_is_in_any_range(RemoteIP, "10.0.0.0", "10.0.0.2/31", "10.0.0.5", "10.0.0.6/31", "10.0.0.8/29")) and (not((ipv4_is_in_any_range(LocalIP, "10.0.0.9", "10.1.0.0/23"))))'
+        == '(ipv4_is_in_any_range(RemoteIP, "10.0.0.0/32", "10.0.0.2/31", "10.0.0.5/32", "10.0.0.6/31", "10.0.0.8/29")) and (not((ipv4_is_in_any_range(LocalIP, "10.0.0.9/32", "10.1.0.0/23"))))'
     )
 
 
@@ -88,5 +88,5 @@ def test_defender_xdr_chained_pipeline(net):
 
     assert (
         xdr_filter
-        == 'DeviceNetworkEvents\n| where (ipv4_is_in_any_range(RemoteIP, "10.0.0.0", "10.0.0.2/31", "10.0.0.4/30", "10.0.0.8/29")) and (not((ipv4_is_in_any_range(LocalIP, "10.0.0.9", "10.2.1.0/25"))))'
+        == 'DeviceNetworkEvents\n| where (ipv4_is_in_any_range(RemoteIP, "10.0.0.0/32", "10.0.0.2/31", "10.0.0.4/30", "10.0.0.8/29")) and (not((ipv4_is_in_any_range(LocalIP, "10.0.0.9/32", "10.2.1.0/25"))))'
     )

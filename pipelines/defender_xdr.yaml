@@ -29,8 +29,8 @@ postprocessing:
   # Enabling support for ipv4_is_in_range requires a |cidr modifier, that is
   # ill-supported on other pipelines and backends.
   - type: replace
-    pattern: "/32"
-    replacement: ""
+    pattern: "(RemoteIP|LocalIP) =~ \"(.*?)/32\""
+    replacement: "\\1 =~ \"\\2\""
   - type: replace
     pattern: "(RemoteIP|LocalIP) =~ \"(.*?/\\d+)\""
     replacement: "ipv4_is_in_range(\\1, \"\\2\")"
