@@ -127,8 +127,10 @@ uv run py.test
  - [ ] External sigma support?
  - [ ] Docker?
  - [ ] Better language on plugins vs backends vs pipelines (and -f flag)
+ - [ ] Note on included pipelines tuned for the best possible queries
  - [ ] Other plugins/backends?
  - [ ] Subprocess call in data flow diagram
+ - [ ] Show execution tests with each baked in query
 
 ## Thank you
 
