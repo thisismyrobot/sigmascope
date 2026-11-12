@@ -24,8 +24,13 @@ transformations:
 postprocessing:
   # PySigma does not support conversion to ipv4_is_in_any_range
   - type: replace
-    pattern: "RemoteIP in~ [(]"
-    replacement: "ipv4_is_in_any_range(RemoteIP, "
+    pattern: "(RemoteIP|LocalIP) in~ [(]"
+    replacement: "ipv4_is_in_any_range(\\1, "
+  # Enabling support for ipv4_is_in_range requires a |cidr modifier, that is
+  # ill-supported on other pipelines and backends.
   - type: replace
-    pattern: "LocalIP in~ [(]"
-    replacement: "ipv4_is_in_any_range(LocalIP, "
+    pattern: "/32"
+    replacement: ""
+  - type: replace
+    pattern: "(RemoteIP|LocalIP) =~ \"(.*?/\\d+)\""
+    replacement: "ipv4_is_in_range(\\1, \"\\2\")"

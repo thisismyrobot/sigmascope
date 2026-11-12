@@ -27,7 +27,7 @@ dev = [
 ]
 
 [tool.pytest.ini_options]
-addopts = "-vv -x -n 2"
+addopts = "-vv -x -n 6"
 
 [tool.mypy]
 python_version = "3.14"

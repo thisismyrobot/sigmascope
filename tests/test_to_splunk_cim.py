@@ -13,8 +13,8 @@ def test_splunk_cim_using_yaml_pipeline(net):
         reserved_nets,
         assigned_nets,
         allowed_source_nets,
-        target_spec=("sigma.backends.splunk", "SplunkBackend"),
-        pipeline_spec="pipelines/splunk_cim_firewall_logs.yaml",
+        target_spec="splunk",
+        pipeline=["pipelines/splunk_cim_firewall_logs.yaml"],
     )
 
     assert (
@@ -34,9 +34,9 @@ def test_splunk_cim_using_module_pipeline(net):
         reserved_nets,
         assigned_nets,
         [],
-        target_spec=("sigma.backends.splunk", "SplunkBackend"),
+        target_spec="splunk",
         # Chosen data model is a no-op in this context, this tests it loads though.
-        pipeline_spec=("sigma.pipelines.splunk", "splunk_windows_pipeline"),
+        pipeline=["splunk_windows"],
     )
 
     # The output here isn't what's useful for Splunk, but it is proof the module loaded and ran.
