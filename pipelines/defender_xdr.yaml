@@ -2,7 +2,7 @@ name: defender_xdr_field_mapping
 priority: 1
 # Maps firewall log concepts of src and destination addresses to constructs used
 # in sysmon and OS logs that include LocalIP and RemoteIP. This allows for
-# Defender XDR searches based on the same inputs.
+# Defender XDR searches from Sigma rules nominally targeting firewall logs.
 allowed_backends:
   - kusto
 transformations:
