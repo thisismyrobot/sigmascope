@@ -120,10 +120,10 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "-b",
-        "--backend",
+        "-t",
+        "--target",
         required=True,
-        help="Name of sigma.backend module - e.g., 'splunk'",
+        help="Name of target sigma.backend module - e.g., 'splunk'",
     )
     parser.add_argument(
         "-p",
@@ -147,7 +147,7 @@ if __name__ == "__main__":
             if args.allowed_source_nets
             else []
         ),
-        args.backend,
+        args.target,
         args.pipeline,
     )
     sys.stdout.write(query)
