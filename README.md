@@ -131,6 +131,7 @@ uv run py.test
  - [ ] Other plugins/backends?
  - [ ] Subprocess call in data flow diagram
  - [ ] Show execution tests with each baked in query
+ - [ ] Confirm '|cidr' isn't actually the way to go
 
 ## Thank you
 
