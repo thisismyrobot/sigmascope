@@ -768,16 +768,10 @@ source = { virtual = "." }
 dependencies = [
     { name = "pip" },
     { name = "pysigma" },
+    { name = "pysigma-backend-kusto" },
+    { name = "pysigma-backend-splunk" },
     { name = "pyyaml" },
     { name = "sigma-cli" },
-]
-
-[package.optional-dependencies]
-kql = [
-    { name = "pysigma-backend-kusto" },
-]
-splunk = [
-    { name = "pysigma-backend-splunk" },
 ]
 
 [package.dev-dependencies]
@@ -793,12 +787,11 @@ dev = [
 requires-dist = [
     { name = "pip", specifier = ">=26.3" },
     { name = "pysigma", specifier = ">=1.0.0" },
-    { name = "pysigma-backend-kusto", marker = "extra == 'kql'", specifier = ">=1.0.0" },
-    { name = "pysigma-backend-splunk", marker = "extra == 'splunk'", specifier = ">=2.1.0" },
+    { name = "pysigma-backend-kusto", specifier = ">=1.0.0" },
+    { name = "pysigma-backend-splunk", specifier = ">=2.1.0" },
     { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "sigma-cli", specifier = ">=3.1.0" },
 ]
-provides-extras = ["splunk", "kql"]
 
 [package.metadata.requires-dev]
 dev = [

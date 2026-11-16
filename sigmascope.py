@@ -66,11 +66,15 @@ def load_networks_from_csv(csv_file: str) -> list[ipaddress.IPv4Network]:
         return list(ipaddress.collapse_addresses(ipv4_networks))
 
 
-def run_conversion(backend: str, pipelines: list[str], sigma_rule_yaml: str) -> str:
+def run_conversion(
+    backend: str,
+    pipelines: list[str],
+    sigma_rule_yaml: str,
+    custom_sigma: str | None = None,
+) -> str:
+    sigma = [custom_sigma] if custom_sigma else ["uv", "run", "sigma"]
     command = [
-        "uv",
-        "run",
-        "sigma",
+        *sigma,
         "convert",
         "--pipeline-check",
         "--verbose",
@@ -101,29 +105,30 @@ def main(
     allowed_nets: list[ipaddress.IPv4Network],
     target_spec: str,
     pipeline: list[str],
+    custom_sigma: str | None = None,
 ) -> str:
     dark_nets = dark_networks(assigned_nets, reserved_nets)
     sigma_rule_yaml = to_sigma(dark_nets, allowed_nets)
-    query = run_conversion(target_spec, pipeline, sigma_rule_yaml)
+    query = run_conversion(target_spec, pipeline, sigma_rule_yaml, custom_sigma)
     return query
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "reserved_csv",
+        "reserved_file",
         help="CSV file of reserved IP addresses and ranges (in CIDR notation)",
     )
     parser.add_argument(
-        "assigned_csv",
+        "assigned_file",
         help="CSV file of assigned IP addresses and ranges (in CIDR notation)",
     )
 
     parser.add_argument(
-        "-b",
-        "--backend",
+        "-t",
+        "--target",
         required=True,
-        help="Name of sigma.backend module - e.g., 'splunk'",
+        help="Name of target sigma.backend module - e.g., 'splunk'",
     )
     parser.add_argument(
         "-p",
@@ -134,20 +139,27 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--allowed_source_nets",
+        "--allowed_sources_file",
         help="CSV file of known-good allowed source addresses (e.g., internal scanners)",
         default=None,
     )
+
+    parser.add_argument(
+        "--sigma-path",
+        help="Custom path to sigma-cli, instead of the using bundled version",
+    )
+
     args = parser.parse_args()
     query = main(
-        load_networks_from_csv(args.reserved_csv),
-        load_networks_from_csv(args.assigned_csv),
+        load_networks_from_csv(args.reserved_file),
+        load_networks_from_csv(args.assigned_file),
         (
-            load_networks_from_csv(args.allowed_source_nets)
-            if args.allowed_source_nets
+            load_networks_from_csv(args.allowed_sources_file)
+            if args.allowed_sources_file
             else []
         ),
-        args.backend,
+        args.target,
         args.pipeline,
+        args.sigma_path,
     )
     sys.stdout.write(query)
