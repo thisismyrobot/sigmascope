@@ -71,7 +71,7 @@ def run_conversion(
     backend: str,
     pipelines: list[str],
     sigma_rule_yaml: str,
-    custom_sigma: None,
+    custom_sigma: str,
 ) -> str:
     sigma = [custom_sigma] if custom_sigma else ["uv", "run", "sigma"]
     command = [
