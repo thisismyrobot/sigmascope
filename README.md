@@ -6,7 +6,7 @@ converting IPAM information sets into darknet-detecting search queries, via
 
 The goal is to simplify the process of searching for traffic targeting IP
 darknet ranges by converting collections of reserved, assigned, and know-good
-source ip addresses and range information into threat hunting queries.
+source IP addresses and range information into threat hunting queries.
 
 ## Behind the scenes
 
@@ -43,6 +43,7 @@ subgraph outputs["Darknet threat hunting query formats"]
   s["Splunk (SPL)"] -."...".-> d["Defender XDR (KQL)"]
 end
 sigmascope -.stdout.-> outputs
+sigmascope -.stdout.-> sigma["Sigma YAML"]
 ```
 
 ## Requirements
@@ -94,15 +95,15 @@ conversion between Sigma YAML and other query languages.
 SigmaScope embeds the
 [splunk](https://github.com/SigmaHQ/pySigma-backend-splunk) and
 [kusto](https://github.com/AttackIQ/pySigma-backend-kusto) backends but you can
-other plugins using the embedded pySigma CLI - e.g.:
+add other plugins using the embedded pySigma CLI - e.g.:
 
  - Show installable backend plugins: `uv run sigma plugin list -t backend` (can be slow)
  - Install plugin: `uv run sigma plugin install elasticsearch`
 
 SigmaScope copies pySigma's use of `-t` and `-p` for selecting a backend and one
 or more pipelines, and the following examples take advantage of custom YAML
-pipelines in [pipelines/](pipelines/) to tune the output and reduce query
-verbosity:
+pipelines in [pipelines/](pipelines/) to further tune the output and reduce
+query verbosity:
 
  - Query for Splunk search: `uv run sigmascope.py -t splunk -p pipelines\splunk_cim_firewall_logs.yaml tests\data\reserved.csv`
  - Query for Microsoft Defender XDR: `uv run sigmascope.py -t kusto -p pipelines/defender_xdr.yaml -p microsoft_xdr tests\data\reserved.csv tests\data\assigned.csv`
@@ -111,8 +112,9 @@ verbosity:
 
 If you want to use a backend or plugin that's not compatible with the version of
 sigma-cli included in this project, you can generate the Sigma YAML output only,
-and pass that onto downstream tools. Here are examples with and without
-providing a list of known-good source addresses.
+and pass that on to a different version of the pySigma CLI or other downstream
+tools. Here are examples with and without providing a list of known-good source
+addresses.
 
 ```
 uv run sigmascope.py --just-sigma tests\data\reserved.csv tests\data\assigned.csv
@@ -122,7 +124,6 @@ uv run sigmascope.py --just-sigma tests\data\reserved.csv tests\data\assigned.cs
 ## Tests
 
 ```
-uv sync --all-extras
 uv run py.test
 ```
 
