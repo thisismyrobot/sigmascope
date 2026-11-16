@@ -101,12 +101,12 @@ add other plugins using the embedded pySigma CLI - e.g.:
  - Install plugin: `uv run sigma plugin install elasticsearch`
 
 SigmaScope copies pySigma's use of `-t` and `-p` for selecting a backend and one
-or more pipelines, and the following examples take advantage of custom YAML
-pipelines in [pipelines/](pipelines/) to further tune the output and reduce
-query verbosity:
+or more pipelines, and the following examples take advantage of a combination of
+built-in and custom YAML pipelines in [pipelines/](pipelines/) to further tune
+the output and reduce query verbosity:
 
- - Query for Splunk search: `uv run sigmascope.py -t splunk -p pipelines\splunk_cim_firewall_logs.yaml tests\data\reserved.csv`
- - Query for Microsoft Defender XDR: `uv run sigmascope.py -t kusto -p pipelines/defender_xdr.yaml -p microsoft_xdr tests\data\reserved.csv tests\data\assigned.csv`
+ - Splunk Search: `uv run sigmascope.py -t splunk -p pipelines\splunk_cim_firewall_logs.yaml tests\data\reserved.csv`
+ - Microsoft Defender XDR: `uv run sigmascope.py -t kusto -p pipelines/defender_xdr.yaml -p microsoft_xdr tests\data\reserved.csv tests\data\assigned.csv`
 
 ### Output plain Sigma
 
