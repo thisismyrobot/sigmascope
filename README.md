@@ -118,6 +118,16 @@ DeviceNetworkEvents
 | where ipv4_is_in_any_range(RemoteIP, "10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")
 ```
 
+### Custom pySigma CLI instance
+
+If you want to use a backend or plugin that's not compatible with the version of
+sigma-cli included in this project, you can call a custom path to the pySigma
+CLI, allowing to use any compatible plugin or backend that works there:
+
+```
+uv run sigmascope.py -t splunk -p pipelines\splunk_cim_firewall_logs.yaml tests\data\reserved.csv tests\data\assigned.csv --custom-sigma=/home/user/sigma
+```
+
 ## Tests
 
 ```
@@ -128,7 +138,6 @@ uv run py.test
 
 In the future I'd like to:
  - Expand backend and pipeline support and examples
- - Allow for calling a custom sigma path
  - Add a Docker image
 
 ## Thank you
