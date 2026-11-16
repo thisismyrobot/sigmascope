@@ -1,8 +1,9 @@
 # SigmaScope
 
-SigmaScope is Network telescope/IP darknet threat hunting query generator,
-converting IPAM information sets into darknet-detecting search queries, via
-[pySigma](https://github.com/SigmaHQ/pySigma).
+SigmaScope is [Network telescope/IP
+darknet](https://en.wikipedia.org/wiki/Network_telescope) threat hunting query
+generator, converting IPAM information sets into darknet-detecting search
+queries, via [pySigma](https://github.com/SigmaHQ/pySigma).
 
 The goal is to simplify the process of searching for traffic targeting IP
 darknet ranges by converting collections of reserved, assigned, and know-good
@@ -16,8 +17,8 @@ but not yet assigned to a known asset. Traffic targeting these addresses is
 either malicious or a misconfiguration, but worthy of investigation regardless.
 
 The collapsed list is then converted into a
-[Sigma](https://sigmahq.io/docs/basics/rules.html) Rule, which can then
-(optionally) be converted into your hunting query format of choice.
+[Sigma](https://sigmahq.io/docs/basics/rules.html) Rule, which is then converted
+into your threat hunting query format of choice.
 
 ## Data flow
 
@@ -43,7 +44,6 @@ subgraph outputs["Darknet threat hunting query formats"]
   s["Splunk (SPL)"] -."...".-> d["Defender XDR (KQL)"]
 end
 sigmascope -.stdout.-> outputs
-sigmascope -.stdout.-> sigma["Sigma YAML"]
 ```
 
 ## Requirements
@@ -100,10 +100,10 @@ add other plugins using the embedded pySigma CLI - e.g.:
  - Show installable backend plugins: `uv run sigma plugin list -t backend` (can be slow)
  - Install plugin: `uv run sigma plugin install elasticsearch`
 
-SigmaScope copies pySigma's use of `-t` and `-p` for selecting a backend and one
-or more pipelines, and the following examples take advantage of a combination of
-built-in and custom YAML pipelines in [pipelines/](pipelines/) to further tune
-the output and reduce query verbosity.
+SigmaScope copies pySigma's use of the `-t` and `-p` flags for specifying a
+backend and one or more pipelines, and the following examples take advantage of
+a combination of built-in and custom YAML pipelines in [pipelines/](pipelines/)
+to further tune the output and reduce query verbosity.
 
 ### Splunk Search
 
