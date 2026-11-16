@@ -2,7 +2,6 @@ import argparse
 import csv
 import ipaddress
 import logging
-import os
 import subprocess
 import sys
 
@@ -106,11 +105,11 @@ def main(
     allowed_nets: list[ipaddress.IPv4Network],
     target_spec: str,
     pipeline: list[str],
-    use_global_sigma: bool = False,
+    custom_sigma: str,
 ) -> str:
     dark_nets = dark_networks(assigned_nets, reserved_nets)
     sigma_rule_yaml = to_sigma(dark_nets, allowed_nets)
-    query = run_conversion(target_spec, pipeline, sigma_rule_yaml, use_global_sigma)
+    query = run_conversion(target_spec, pipeline, sigma_rule_yaml, custom_sigma)
     return query
 
 
