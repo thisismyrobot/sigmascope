@@ -70,7 +70,7 @@ def run_conversion(
     backend: str,
     pipelines: list[str],
     sigma_rule_yaml: str,
-    custom_sigma: str,
+    custom_sigma: str | None = None,
 ) -> str:
     sigma = [custom_sigma] if custom_sigma else ["uv", "run", "sigma"]
     command = [
@@ -105,7 +105,7 @@ def main(
     allowed_nets: list[ipaddress.IPv4Network],
     target_spec: str,
     pipeline: list[str],
-    custom_sigma: str,
+    custom_sigma: str | None = None,
 ) -> str:
     dark_nets = dark_networks(assigned_nets, reserved_nets)
     sigma_rule_yaml = to_sigma(dark_nets, allowed_nets)

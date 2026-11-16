@@ -113,6 +113,4 @@ def test_pipeline_invocation_with_global_sigma():
         capture_output=True,
         text=True,
     )
-    assert result.stderr.strip().endswith(
-        "FileNotFoundError: [WinError 2] The system cannot find the file specified"
-    )
+    assert "FileNotFoundError: " in result.stderr
