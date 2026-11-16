@@ -103,22 +103,21 @@ add other plugins using the embedded pySigma CLI - e.g.:
 SigmaScope copies pySigma's use of `-t` and `-p` for selecting a backend and one
 or more pipelines, and the following examples take advantage of a combination of
 built-in and custom YAML pipelines in [pipelines/](pipelines/) to further tune
-the output and reduce query verbosity:
+the output and reduce query verbosity.
 
- - Splunk Search: `uv run sigmascope.py -t splunk -p pipelines\splunk_cim_firewall_logs.yaml tests\data\reserved.csv`
- - Microsoft Defender XDR: `uv run sigmascope.py -t kusto -p pipelines/defender_xdr.yaml -p microsoft_xdr tests\data\reserved.csv tests\data\assigned.csv`
+### Splunk Search
 
-### Output plain Sigma
-
-If you want to use a backend or plugin that's not compatible with the version of
-sigma-cli included in this project, you can generate the Sigma YAML output only,
-and pass that on to a different version of the pySigma CLI or other downstream
-tools. Here are examples with and without providing a list of known-good source
-addresses.
-
+```bash
+uv run sigmascope.py -t splunk -p pipelines/splunk_cim_firewall_logs.yaml tests/data/reserved.csv tests/data/assigned.csv --allowed_sources_file tests/data/allowed.csv
+dest_ip IN ("10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29") NOT (src_ip IN ("10.0.1.2/32", "10.0.4.0/29"))
 ```
-uv run sigmascope.py --just-sigma tests\data\reserved.csv tests\data\assigned.csv
-uv run sigmascope.py --just-sigma tests\data\reserved.csv tests\data\assigned.csv --allowed_source_nets test\data\allowed.csv
+
+### Microsoft Defender XDR
+
+```bash
+uv run sigmascope.py -t kusto -p pipelines/defender_xdr.yaml -p microsoft_xdr tests/data/reserved.csv tests/data/assigned.csv
+DeviceNetworkEvents
+| where ipv4_is_in_any_range(RemoteIP, "10.0.0.0/32", "10.0.0.2/31", "10.0.0.6/31", "10.0.0.8/29")
 ```
 
 ## Tests
@@ -127,11 +126,12 @@ uv run sigmascope.py --just-sigma tests\data\reserved.csv tests\data\assigned.cs
 uv run py.test
 ```
 
-## TODO (v1)
+## Future plans
 
- - [ ] Demo execution tests with each baked in query
- - [ ] Export Sigma
- - [ ] Confirm '|cidr' isn't actually the way to go
+In the future I'd like to:
+ - Expand backend and pipeline support and examples
+ - Allow for calling a custom sigma path
+ - Add a Docker image
 
 ## Thank you
 
