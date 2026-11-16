@@ -64,9 +64,7 @@ you are expecting to scan IP darknets - for instance security scanning tools
 ## Usage
 
 ```
-usage: sigmascope.py [-h] -t TARGET -p PIPELINE [--allowed_sources_file ALLOWED_SOURCES_FILE]
-                     [--global-sigma GLOBAL_SIGMA]
-                     reserved_file assigned_file
+usage: sigmascope.py [-h] -t TARGET -p PIPELINE [--allowed_sources_file ALLOWED_SOURCES_FILE] [--sigma-path SIGMA_PATH] reserved_file assigned_file
 
 positional arguments:
   reserved_file         CSV file of reserved IP addresses and ranges (in CIDR notation)
@@ -79,8 +77,8 @@ options:
                         Name of sigma.pipelines module - e.g., 'splunk_cim', or path to a pipeline YAML definition
   --allowed_sources_file ALLOWED_SOURCES_FILE
                         CSV file of known-good allowed source addresses (e.g., internal scanners)
-  --global-sigma GLOBAL_SIGMA
-                        Use a globally-installed sigma-cli instance instead of the bundled version
+  --sigma-path SIGMA_PATH
+                        Custom path to sigma-cli, instead of the using bundled version
 ```
 
 ## Output formats

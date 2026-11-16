@@ -2,6 +2,7 @@ import argparse
 import csv
 import ipaddress
 import logging
+import os
 import subprocess
 import sys
 
@@ -70,9 +71,9 @@ def run_conversion(
     backend: str,
     pipelines: list[str],
     sigma_rule_yaml: str,
-    use_global_sigma: bool = False,
+    custom_sigma: None,
 ) -> str:
-    sigma = ["sigma"] if use_global_sigma else ["uv", "run", "sigma"]
+    sigma = [custom_sigma] if custom_sigma else ["uv", "run", "sigma"]
     command = [
         *sigma,
         "convert",
@@ -145,9 +146,8 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--global-sigma",
-        help="Use a globally-installed sigma-cli instance instead of the bundled version",
-        default=False,
+        "--sigma-path",
+        help="Custom path to sigma-cli, instead of the using bundled version",
     )
 
     args = parser.parse_args()
@@ -161,6 +161,6 @@ if __name__ == "__main__":
         ),
         args.target,
         args.pipeline,
-        args.global_sigma,
+        args.sigma_path,
     )
     sys.stdout.write(query)
